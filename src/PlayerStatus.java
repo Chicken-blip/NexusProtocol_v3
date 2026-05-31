@@ -1,0 +1,3 @@
+public enum PlayerStatus {
+    CALM, PANICKING, EXHAUSTED, HIDING, RESTING, INJURED
+}

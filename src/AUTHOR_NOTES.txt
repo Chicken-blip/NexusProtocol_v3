@@ -1,0 +1,11 @@
+Author: A Chicken, or is it?
+
+Email: didi1c.eke@gmail.com
+Start date: May 30, 2026
+
+Play instructions:
+1 - Run the Main file's main function.
+2 - Enjoy, hopefully
+
+Dev notes:
+5/30/2026: Still in development, but I'd say it's pretty nice so far

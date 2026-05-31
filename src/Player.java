@@ -1,0 +1,101 @@
+import java.util.List;
+
+public class Player {
+    Room currentRoom;
+    PlayerView currentView;
+    int stress;
+    int heartRate;
+    PlayerStatus status;
+    List<String> inventory;
+    public int injuries;
+    int exhaustedCnter;
+
+    public Player() {
+        status = PlayerStatus.PANICKING;
+        stress = 80;
+        this.heartRate = setHeartRate(150, 180);
+    }
+
+    private int setHeartRate(int min, int max) {
+        return (int)(Math.random() * (max - min + 1)) + min;
+    }
+
+    public String stressDesc() {
+        if (stress <= 20) {
+            return "CALM";
+        } else if (stress <= 40) {
+            return "LOW";
+        } else if (stress <= 60) {
+            return "MODERATE";
+        } else if (stress <= 80) {
+            return "HIGH";
+        } else {
+            return "CRITICAL";
+        }
+    }
+
+    public void setStatus(PlayerStatus sts) {
+        this.status = sts;
+    }
+
+    public void setStatus(int val) {
+        if (this.exhaustedCnter >= 3) {
+            this.status = PlayerStatus.EXHAUSTED;
+        } else if (this.stress >= 60) {
+            this.status = PlayerStatus.PANICKING;
+        } else {
+            this.status = PlayerStatus.CALM;
+        }
+    }
+
+    public void setStatus() {
+        if (status == PlayerStatus.HIDING || status == PlayerStatus.RESTING) {
+            //Do not change status if hiding or sleeping already
+            return;
+        } else if (this.exhaustedCnter >= 3) {
+            this.status = PlayerStatus.EXHAUSTED;
+        } else if (this.stress >= 60) {
+            this.status = PlayerStatus.PANICKING;
+        } else {
+            this.status = PlayerStatus.CALM;
+        }
+    }
+
+    public String getStatus() {
+        return switch (status) {
+            case CALM -> "CALM";
+            case PANICKING -> "PANICKING";
+            case EXHAUSTED -> "EXHAUSTED";
+            case HIDING -> "HIDING";
+            case RESTING -> "RESTING";
+            case INJURED -> "INJURED";
+            default -> "";
+        };
+    }
+
+    public boolean canAct() {
+        return switch (status) {
+            case PANICKING -> false;
+            case EXHAUSTED -> false;
+            case RESTING -> false;
+            default -> true;
+        };
+    }
+
+    public boolean isSleeping() {
+        return this.status == PlayerStatus.RESTING;
+    }
+
+    public String actFail() {
+        return switch (status) {
+            case PANICKING -> "ACTION UNAVAILABLE | Cass's stress is too high";
+            case EXHAUSTED -> "ACTION UNAVAILABLE | Cass's heart rate has been too high";
+            case RESTING -> "ACTION UNAVAILABLE | Cass is currently resting";
+            default -> "ACTION UNAVAILABLE | Check Cass's vitals";
+        };
+    }
+
+    public void Stats() {
+
+    }
+}

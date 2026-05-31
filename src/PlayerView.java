@@ -1,0 +1,3 @@
+public enum PlayerView {
+    DEFAULT_VIEW, TERMINAL_VIEW, COMMS_VIEW, VITALS_VIEW
+}
