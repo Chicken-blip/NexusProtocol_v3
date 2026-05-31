@@ -9,3 +9,5 @@ Play instructions:
 
 Dev notes:
 5/30/2026: Still in development, but I'd say it's pretty nice so far
+5/30/2026: Plan to test out all commands tomorrow, and make some sort of map for this game - I have no idea what it's trying to be right now!
+5/31/2026: Start development of 'Searchable' abstract class

@@ -145,7 +145,7 @@ public class Game {
                             }
                             if (obj instanceof Window wnd) {
                                 println("> VISIBILITY: " + wnd.visibility);
-                                println("> RISK" + wnd.risk);
+                                println("> RISK: " + wnd.risk);
                             }
                             println(">");
                         } catch (Exception e) {
@@ -277,7 +277,7 @@ public class Game {
                         println("> " + decode(code));
                         break;
                     case "reset":
-                        id = input.substring(input.indexOf(" "), input.length());
+                        id = input.substring(input.indexOf(" "));
                         try {
                             int id_num = Integer.parseInt(id.strip());
                             if (!this.IDs.contains(id_num)) {
@@ -285,7 +285,8 @@ public class Game {
                             }
                             Interactable obj = find_object(id_num);
                             if (obj instanceof SecurityCamera camera) {
-                                camera.reset();
+                                println("> " + camera.reset());
+                                println("> ");
                             } else {
                                 println("> UNAPPLICABLE OBJECT | This command must reference a security camera");
                                 println("> ");
