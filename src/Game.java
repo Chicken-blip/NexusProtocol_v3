@@ -309,6 +309,13 @@ public class Game {
                             };
                             boolean exit_found = false;
                             Room original = player.currentRoom;
+                            //Stop hiding
+                            if (player.status == PlayerStatus.HIDING) {
+                                player.setStatus(PlayerStatus.CALM);
+                                player.setStatus();
+                                player.location = null;
+                                println("> NOTE: Cass is no longer hiding.");
+                            }
                             for (Exit e : player.currentRoom.roomExits) {
                                 if (e.direction == d && e.canUseExit(player) && player.currentRoom.canActInRoom(player) && player.canAct()) {
                                     player.currentRoom = e.targetRoom;
@@ -345,7 +352,14 @@ public class Game {
                         } else if (this.player.isSleeping()) {
                             println("> " + this.player.actFail());
                         } else {
-                            id = input.substring(input.indexOf(" "), input.length());
+                            //Stop hiding
+                            if (player.status == PlayerStatus.HIDING) {
+                                player.setStatus(PlayerStatus.CALM);
+                                player.setStatus();
+                                player.location = null;
+                                println("> NOTE: Cass is no longer hiding.");
+                            }
+                            id = input.substring(input.indexOf(" "));
                             try {
                                 int id_num = Integer.parseInt(id.strip());
                                 if (!this.IDs.contains(id_num)) {
@@ -353,43 +367,41 @@ public class Game {
                                 }
                                 Interactable obj = find_object(id_num);
                                 boolean recovered;
-                                if (obj instanceof EmergencyKit) {
-                                    EmergencyKit kit = (EmergencyKit) obj;
-                                    recovered = kit.canUse();
-                                    if (recovered) {
-                                        println("> ACTION SUCCESS | Used " + obj.name);
-                                        String[][] list = kit.use(player);
-                                        for (String[] i : list) {
-                                            for (String x : i) {
-                                                println("> " + x);
+                                switch (obj) {
+                                    case EmergencyKit kit -> {
+                                        recovered = kit.canUse();
+                                        if (recovered) {
+                                            println("> ACTION SUCCESS | Used " + obj.name);
+                                            String[][] list = kit.use(player);
+                                            for (String[] i : list) {
+                                                for (String x : i) {
+                                                    println("> " + x);
+                                                }
                                             }
+                                        } else {
+                                            println("> EMERGENCY KIT UNUSABLE | This emergency kit has no more uses remaining.");
                                         }
-                                    } else {
-                                        println("> EMERGENCY KIT UNUSABLE | This emergency kit has no more uses remaining.");
                                     }
-                                } else if (obj instanceof Bed) {
-                                    Bed bed = (Bed) obj;
-                                    //FIXME: Create function
-                                    //bed.rest();
-                                } else if (obj instanceof WaterDispenser water) {
-                                    recovered = water.canUse();
-                                    //FIXME: Create function
-                                    if (recovered) {
-                                        println("> ACTION SUCCESS | Used " + obj.name);
-                                        String[] list = water.use(player);
-                                        for (String i : list) {
-                                            println("> " + i);
+                                    case Bed bed -> {
+                                        println("> " + bed.rest(this.player));
+                                    }
+                                    case WaterDispenser water -> {
+                                        recovered = water.canUse();
+                                        if (recovered) {
+                                            println("> ACTION SUCCESS | Used " + obj.name);
+                                            String[] list = water.use(player);
+                                            for (String i : list) {
+                                                println("> " + i);
+                                            }
+                                        } else {
+                                            println("> WATER DISPENSER UNUSABLE | This water dispenser has no more uses remaining.");
                                         }
-                                    } else {
-                                        println("> WATER DISPENSER UNUSABLE | This water dispenser has no more uses remaining.");
                                     }
-                                } else if (obj instanceof Window wnd) {
-                                    //FIXME: Create function
-                                    //wnd.peek();
-                                }
-                                else {
-                                    println("> UNAPPLICABLE OBJECT | This command must reference an object Cass can use");
-                                    println("> ");
+                                    case Window wnd -> wnd.peek();
+                                    case null, default -> {
+                                        println("> UNAPPLICABLE OBJECT | This command must reference an object Cass can use");
+                                        println("> ");
+                                    }
                                 }
                             } catch (Exception e) {
                                 println("> INVALID OBJECT ID | You must put in a valid object ID");
@@ -406,8 +418,7 @@ public class Game {
                             }
                             Interactable obj = find_object(id_num);
                             if (obj instanceof HidingSpot hs) {
-                                //FIXME: Create function
-                                //hs.hide();
+                                println("> " + hs.hide(this.player));
                             } else {
                                 println("> UNAPPLICABLE OBJECT | This command must reference a hiding spot");
                                 println("> ");
@@ -498,7 +509,7 @@ public class Game {
     }
 
     public void guardMvmtSystem() {
-        //TODO: Navigate guards on regular patrol
+        //TODO: Navigate guards on regular patrol, if implemented
     }
 
     public void CommsInterface() {
@@ -521,6 +532,12 @@ public class Game {
         println("------------------------");
         player.currentView = PlayerView.DEFAULT_VIEW;
     }
+
+    //TODO: Add Documents Interface/View
+    /*
+    public void DocumentsInterface() {
+    }
+     */
 
     public void updateLog(Object src) {
         //TODO: Implement Observer method in Interactables to return state changes
@@ -545,6 +562,13 @@ public class Game {
     }
 
     public void useTurn(Object source) {
+        if (player.bed != null) {
+            player.bed.turnCount++;
+            player.stress -= (int) (Math.random() * player.bed.restEfficiency) + 10;
+            if (player.stress < 0) {
+                player.stress = 0;
+            }
+        }
         updateLog(source);
         player.setStatus();
         this.turn ++;

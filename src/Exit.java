@@ -52,6 +52,10 @@ public class Exit {
             case HAS_KEYCARD:
                 break;
             case VENT_OPEN:
+                //TODO: Need to see if this is correct
+                if (dependent instanceof VentCover vent) {
+                    return Objects.equals(vent.state, "VENT_OPEN");
+                }
                 break;
             case POWER_ON:
                 break;

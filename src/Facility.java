@@ -9,13 +9,14 @@ public class Facility {
         main = game;
         this.rooms = new ArrayList<>();
         //Map 0: 3-Room test map
+        Room roomA, roomB, roomC, roomD, roomE, roomF, roomG, roomH;
         switch (mapType) {
             case 0:
-                Room roomA = new Room("Cell_A7");
+                roomA = new Room("Cell_A7");
                 roomA.setActionRequirement(ActionRequirement.LIGHTS_ON);
-                Room roomB = new Room("Corridor_A");
+                roomB = new Room("Corridor_A");
                 roomB.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
-                Room roomC = new Room("Evaluation_Lab");
+                roomC = new Room("Evaluation_Lab");
                 roomC.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
 
 
@@ -32,7 +33,7 @@ public class Facility {
 
                 Exit b = new Exit("North Exit");
                 b.setTarget(roomB);
-                b.setDependent(roomA.roomObjects.get(0)); //Reinforced_Door must be unlocked
+                b.setDependent(roomA.roomObjects.getFirst()); //Reinforced_Door must be unlocked
                 b.setDirection(Direction.NORTH);
                 b.setRequirement(ExitRequirement.UNLOCKED);
                 b.setDesc("The reinforced door leads to the corridor.");
@@ -46,7 +47,7 @@ public class Facility {
                 roomB.addInteractable(a);
                 a = new VentCover("Air Vent", main.generateID(), 4);
                 roomB.addInteractable(a);
-                a = new HidingSpot("Emergency Closet", main.generateID(), 8, 1);
+                a = new HidingSpot("Emergency Closet", main.generateID(), 8);
                 roomB.addInteractable(a);
 
                 b = new Exit("South Exit");
@@ -83,6 +84,24 @@ public class Facility {
                 roomC.addExit(b);
 
                 rooms.add(roomC);
+            case 1:
+                //TODO: Complete 1st Facility Construction
+                roomA = new Room("Cell_M4");
+                roomA.setActionRequirement(ActionRequirement.LIGHTS_ON);
+                roomB = new Room("Corridor_M");
+                roomB.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
+                roomC = new Room("Utility_Access");
+                roomC.setActionRequirement(ActionRequirement.LIGHTS_ON);
+                roomD = new Room("Logistics Bay");
+                roomD.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
+                roomE = new Room("Loading Bay");
+                roomE.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
+                roomF = new Room("Med-Lab");
+                roomF.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
+                roomG = new Room("Atrium");
+                roomG.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
+                roomH = new Room("Security Office");
+                roomH.setActionRequirement(ActionRequirement.LIGHTS_ON);
             default:
                 rooms.add(new Room("Invalid map number!"));
         }

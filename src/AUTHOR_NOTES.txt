@@ -11,3 +11,6 @@ Dev notes:
 5/30/2026: Still in development, but I'd say it's pretty nice so far
 5/30/2026: Plan to test out all commands tomorrow, and make some sort of map for this game - I have no idea what it's trying to be right now!
 5/31/2026: Start development of 'Searchable' abstract class
+5/31/2026: Finished basic development of 'Searchable' and 'Item' classes
+5/31/2026: Completed 'hide' and 'rest' functionality
+5/31/2026: Since I've worked so hard, and I'm on track, I'll take a break! See you again on 6/2~!

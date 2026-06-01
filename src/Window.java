@@ -7,4 +7,8 @@ public class Window extends Interactable {
         this.risk = risk;
         this.isTerminalInteractable = false;
     }
+
+    public void peek() {
+        //TODO: Build function
+    }
 }

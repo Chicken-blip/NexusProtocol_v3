@@ -9,6 +9,8 @@ public class Player {
     List<String> inventory;
     public int injuries;
     int exhaustedCnter;
+    HidingSpot location = null;
+    Bed bed = null;
 
     public Player() {
         status = PlayerStatus.PANICKING;
@@ -49,15 +51,22 @@ public class Player {
     }
 
     public void setStatus() {
-        if (status == PlayerStatus.HIDING || status == PlayerStatus.RESTING) {
-            //Do not change status if hiding or sleeping already
-            return;
-        } else if (this.exhaustedCnter >= 3) {
-            this.status = PlayerStatus.EXHAUSTED;
-        } else if (this.stress >= 60) {
-            this.status = PlayerStatus.PANICKING;
-        } else {
-            this.status = PlayerStatus.CALM;
+        if (status == PlayerStatus.RESTING) {
+            if (this.bed.turnCount >= this.bed.turnCost) {
+                //Completed sleeping
+                this.bed.turnCount = 0;
+                this.bed = null;
+            }
+        }
+        if (!(status == PlayerStatus.HIDING || this.bed != null)) {
+            this.location = null;
+            if (this.exhaustedCnter >= 3) {
+                this.status = PlayerStatus.EXHAUSTED;
+            } else if (this.stress >= 60) {
+                this.status = PlayerStatus.PANICKING;
+            } else {
+                this.status = PlayerStatus.CALM;
+            }
         }
     }
 
@@ -69,7 +78,6 @@ public class Player {
             case HIDING -> "HIDING";
             case RESTING -> "RESTING";
             case INJURED -> "INJURED";
-            default -> "";
         };
     }
 
@@ -84,6 +92,10 @@ public class Player {
 
     public boolean isSleeping() {
         return this.status == PlayerStatus.RESTING;
+    }
+
+    public boolean isHiding() {
+        return this.status == PlayerStatus.HIDING;
     }
 
     public String actFail() {
