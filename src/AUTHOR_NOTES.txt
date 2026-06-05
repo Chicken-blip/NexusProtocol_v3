@@ -14,3 +14,8 @@ Dev notes:
 5/31/2026: Finished basic development of 'Searchable' and 'Item' classes
 5/31/2026: Completed 'hide' and 'rest' functionality
 5/31/2026: Since I've worked so hard, and I'm on track, I'll take a break! See you again on 6/2~!
+6/4/2026: Couldn't bring myself to work on it until the 4th....
+6/4/2026: Added functionality for 'Vent' - should now work, if connected to a 'Vent Room'
+6/4/2026: Added 'Cabinet' class, extension of Searchable
+6/4/2026: Need to add 'TrashBin', 'Shelf', 'Table', and 'Container' Searchables before I create Map #1
+6/4/2026: Also need to add 'Documents', 'Keycard', and 'Tool' Items

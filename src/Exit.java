@@ -1,3 +1,4 @@
+import java.security.Key;
 import java.util.Objects;
 
 public class Exit {
@@ -52,9 +53,8 @@ public class Exit {
             case HAS_KEYCARD:
                 break;
             case VENT_OPEN:
-                //TODO: Need to see if this is correct
                 if (dependent instanceof VentCover vent) {
-                    return Objects.equals(vent.state, "VENT_OPEN");
+                    return Objects.equals(vent.state, "OPEN");
                 }
                 break;
             case POWER_ON:
@@ -70,7 +70,13 @@ public class Exit {
         }
         switch (this.requirement) {
             case UNLOCKED:
-                return "ACCESS DENIED | Door must be unlocked";
+                if (dependent instanceof LockedDoor) {
+                    return "ACCESS DENIED | Door must be unlocked";
+                } else if (dependent instanceof Keypad) {
+                    return "ACCESS DENIED | Keypad must be bypassed";
+                }
+            case VENT_OPEN:
+                return "ACCESS DENIED | Vent is not open";
             default:
                 return "ACCESS DENIED | Requirements unfulfilled";
         }
