@@ -1,12 +1,18 @@
 public class Keypad extends Interactable {
     int correctCode;
     boolean isSolved;
+    /* State Options:
+    1 - LOCKED
+    2 - BYPASSED
+     */
 
     public Keypad(String name, int id) {
         super(name, id);
         this.correctCode = generateCode(4);
         this.isSolved = false;
         this.isTerminalInteractable = true;
+        this.desc = "N/A";
+        this.state = "LOCKEd";
     }
 
 
@@ -28,6 +34,7 @@ public class Keypad extends Interactable {
             return "ERROR | Keypad already bypassed";
         } else if (code_num == this.correctCode) {
             this.isSolved = true;
+            this.state = "BYPASSED";
             return "ACCESS GRANTED | Keypad bypassed";
         } else {
             return "ACCESS DENIED | Incorrect code entered";

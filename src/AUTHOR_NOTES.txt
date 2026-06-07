@@ -19,3 +19,6 @@ Dev notes:
 6/4/2026: Added 'Cabinet' class, extension of Searchable
 6/4/2026: Need to add 'TrashBin', 'Shelf', 'Table', and 'Container' Searchables before I create Map #1
 6/4/2026: Also need to add 'Documents', 'Keycard', and 'Tool' Items
+6/5/2026: Added Rooms A (Cell M4), B (Corridor M), and C (Utility Access) to Map #1 - excluding all the incomplete types
+6/6/2026: Did a run of Map #0 - took less than 8 minutes to do everything possible, but that's without error. Probably ~15, 20min for a newbie
+6/6/2026: Finished adding all Rooms for Map #1, excluding all the incomplete object types

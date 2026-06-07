@@ -163,6 +163,8 @@ public class Game {
                             Interactable obj = find_object(id_num);
                             if (obj instanceof LockedDoor door) {
                                 println("> " + door.unlock());
+                            } else if (obj instanceof VentCover vent) {
+                                println("> " + vent.open());
                             } else {
                                 println("> UNAPPLICABLE OBJECT | This command must reference a door");
                                 println("> ");
