@@ -12,6 +12,7 @@ public class Facility {
         Room roomA, roomB, roomC, roomD, roomE, roomF, roomG, roomH;
         Interactable a;
         Exit b;
+        Item c;
         switch (mapType) {
             case 0 -> {
                 roomA = new Room("Cell_A7");
@@ -88,7 +89,7 @@ public class Facility {
                 rooms.add(roomC);
             }
             case 1 -> {
-                //TODO: Complete 1st Facility Construction
+                //TODO: Facility needs testing, but should work generally
                 roomA = new Room("Cell_M4");
                 roomA.setActionRequirement(ActionRequirement.LIGHTS_ON);
                 roomB = new Room("Corridor_M");
@@ -135,6 +136,8 @@ public class Facility {
                 a = new VentCover("Vent Cover", main.generateID(), 3);
                 roomB.addInteractable(a);
                 //Also add Trash Bin in this room
+                a = new OpenSearchable("Trash Bin", main.generateID());
+                roomB.addInteractable(a);
                 a = new Keypad("Keypad M1", main.generateID());
                 roomB.addInteractable(a);
 
@@ -171,7 +174,14 @@ public class Facility {
 
                 a = new HidingSpot("Pipe Junction Box", main.generateID(), 2);
                 roomC.addInteractable(a);
-                //Add other Searchables
+                a = new Searchable("Storage Shelves", main.generateID());
+                roomC.addInteractable(a);
+                a = new Searchable("Maintenance Log Cabinet", main.generateID());
+                c = new Document("Repair Logs", main.generateID());
+                ((Searchable) a).addItem(c);
+                a = new LightSwitch("Light Switch", main.generateID());
+                roomC.setDependent(a);
+                roomC.addInteractable(a);
 
                 b = new Exit("North Exit");
                 b.setTarget(roomB);
@@ -184,11 +194,24 @@ public class Facility {
 
                 a = new LockedDoor("Roll-up Door", main.generateID(), 2);
                 roomD.addInteractable(a);
-                //Add other Searchables and Items
+                a = new Searchable("Shipping Container", main.generateID());
+                c = new Tool("Crowbar", main.generateID());
+                ((Searchable) a).addItem(c);
+                roomD.addInteractable(a);
+                a = new Searchable("Shipping Manifests", main.generateID());
+                c = new Document("Manifests", main.generateID());
+                ((Searchable) a).addItem(c);
+                roomD.addInteractable(a);
+                a = new Searchable("Tool Cabinet", main.generateID());
+                c = new Tool("Wire Cutters", main.generateID());
+                ((Searchable) a).addItem(c);
+                c = new Tool("Flashlight", main.generateID());
+                ((Searchable) a).addItem(c);
+                roomD.addInteractable(a);
 
                 b = new Exit("North Exit");
                 b.setTarget(roomE);
-                b.setDependent(roomD.roomObjects.get(1)); //Keypad must be bypassed
+                b.setDependent(roomD.roomObjects.get(1)); //Roll-up door must be unlocked
                 b.setDirection(Direction.NORTH);
                 b.setRequirement(ExitRequirement.UNLOCKED);
                 b.setDesc("The roll-up door leads to the med-lab.");
@@ -214,7 +237,10 @@ public class Facility {
                 roomE.addInteractable(a);
                 a = new SecurityCamera("Security Camera", main.generateID());
                 roomE.addInteractable(a);
-                //Add other Searchable and Item
+                a = new Searchable("Shipping Box", main.generateID());
+                c = new Tool("Emergency Flare", main.generateID());
+                ((Searchable) a).addItem(c);
+                roomE.addInteractable(a);
 
                 b = new Exit("South Exit");
                 b.setTarget(roomD);
@@ -229,7 +255,10 @@ public class Facility {
                 roomF.addInteractable(a);
                 a = new EmergencyKit("Medical Supplies", main.generateID(), 2, new String[] {"SEDATIVE", "SEDATIVE", "BANDAGES"});
                 roomF.addInteractable(a);
-                //Add other Searchables
+                a = new Searchable("Drug Cabinet", main.generateID());
+                roomF.addInteractable(a);
+                a = new OpenSearchable("Examination Table", main.generateID());
+                roomF.addInteractable(a);
 
                 b = new Exit("West Exit");
                 b.setTarget(roomB);
@@ -260,6 +289,12 @@ public class Facility {
                 roomG.addInteractable(a);
                 a = new VentCover("Vent Cover", main.generateID(), 5);
                 roomG.addInteractable(a);
+                a = new OpenSearchable("Bench", main.generateID());
+                c = new Document("Facility Brochure", main.generateID());
+                ((OpenSearchable) a).addItem(c);
+                c = new Keycard("Employee Badge", main.generateID(), "Security");
+                ((OpenSearchable) a).addItem(c);
+                roomF.addInteractable(a);
                 //Add Searchable and Items later
 
                 b = new Exit("South Exit");
@@ -282,7 +317,14 @@ public class Facility {
                 roomH.addInteractable(a);
                 a = new VentCover("Vent Cover", main.generateID(), 3);
                 roomH.addInteractable(a);
-                //Add Searchables and Items later
+                a = new Searchable("Filing Cabinet", main.generateID());
+                roomH.addInteractable(a);
+                a = new Searchable("Shift Log Binder", main.generateID());
+                roomH.addInteractable(a);
+                a = new OpenSearchable("Guard Desk", main.generateID());
+                c = new Keycard("Master Keycard", main.generateID(), "Master");
+                ((OpenSearchable) a).addItem(c);
+                roomH.addInteractable(a);
 
                 b = new Exit("West Exit");
                 b.setTarget(roomF);

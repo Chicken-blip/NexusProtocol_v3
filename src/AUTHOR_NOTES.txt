@@ -22,3 +22,6 @@ Dev notes:
 6/5/2026: Added Rooms A (Cell M4), B (Corridor M), and C (Utility Access) to Map #1 - excluding all the incomplete types
 6/6/2026: Did a run of Map #0 - took less than 8 minutes to do everything possible, but that's without error. Probably ~15, 20min for a newbie
 6/6/2026: Finished adding all Rooms for Map #1, excluding all the incomplete object types
+6/7/2026: Finished adding all objects, but functionality has yet to be determined
+6/7/2026: Need to check and see if all functions work - and maybe set up the actual 'take' function and inventory functionality
+6/7/2026: Doing the testing tomorrow - way too irate today
