@@ -1,9 +1,11 @@
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
     List<Interactable> roomObjects;
     List<Exit> roomExits;
+    List<Item> roomItems;
     String name;
     String desc;
     Interactable dependent;
@@ -22,7 +24,9 @@ public class Room {
     public void addInteractable(Interactable i) {
         roomObjects.add(i);
     }
-
+    public void addItem(Item i) {
+        roomItems.add(i);
+    }
     public void setDependent(Interactable i) {
         this.dependent = i;
     }

@@ -1,3 +1,3 @@
 public enum ConsoleColor {
-    WHITE, BLACK, RED, GREEN, BLUE, CYAN, DEFAULT
+    WHITE, BLACK, RED, GREEN, BLUE, CYAN, PURPLE, DEFAULT
 }

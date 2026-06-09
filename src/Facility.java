@@ -127,6 +127,8 @@ public class Facility {
 
                 rooms.add(roomA);
 
+                a = new Keypad("Keypad M1", main.generateID());
+                roomB.addInteractable(a);
                 a = new SecurityCamera("Security Camera", main.generateID());
                 roomB.addInteractable(a);
                 a = new SecurityCamera("Security Camera", main.generateID());
@@ -137,8 +139,6 @@ public class Facility {
                 roomB.addInteractable(a);
                 //Also add Trash Bin in this room
                 a = new OpenSearchable("Trash Bin", main.generateID());
-                roomB.addInteractable(a);
-                a = new Keypad("Keypad M1", main.generateID());
                 roomB.addInteractable(a);
 
                 b = new Exit("West Exit");
@@ -164,7 +164,7 @@ public class Facility {
 
                 b = new Exit("East Exit");
                 b.setTarget(roomB);
-                b.setDependent(roomA.roomObjects.get(5)); //Keypad must be bypassed
+                b.setDependent(roomA.roomObjects.getFirst()); //Keypad must be bypassed
                 b.setDirection(Direction.EAST);
                 b.setRequirement(ExitRequirement.UNLOCKED);
                 b.setDesc("The keypad-locked exit leads to the med-lab.");
@@ -211,7 +211,7 @@ public class Facility {
 
                 b = new Exit("North Exit");
                 b.setTarget(roomE);
-                b.setDependent(roomD.roomObjects.get(1)); //Roll-up door must be unlocked
+                b.setDependent(roomD.roomObjects.getFirst()); //Roll-up door must be unlocked
                 b.setDirection(Direction.NORTH);
                 b.setRequirement(ExitRequirement.UNLOCKED);
                 b.setDesc("The roll-up door leads to the med-lab.");
@@ -278,6 +278,7 @@ public class Facility {
                 b.setTarget(roomH);
                 b.setRequirement(ExitRequirement.HAS_KEYCARD);
                 b.setDesc("The exit leads to the security office.");
+                b.setCard_perm("Security");
                 b.setDirection(Direction.EAST);
                 roomF.addExit(b);
 
@@ -294,7 +295,7 @@ public class Facility {
                 ((OpenSearchable) a).addItem(c);
                 c = new Keycard("Employee Badge", main.generateID(), "Security");
                 ((OpenSearchable) a).addItem(c);
-                roomF.addInteractable(a);
+                roomG.addInteractable(a);
                 //Add Searchable and Items later
 
                 b = new Exit("South Exit");
@@ -330,6 +331,7 @@ public class Facility {
                 b.setTarget(roomF);
                 b.setRequirement(ExitRequirement.HAS_KEYCARD);
                 b.setDesc("The exit leads to the med-lab.");
+                b.setCard_perm("Security");
                 b.setDirection(Direction.WEST);
                 roomH.addExit(b);
 

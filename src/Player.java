@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -6,7 +7,7 @@ public class Player {
     int stress;
     int heartRate;
     PlayerStatus status;
-    List<String> inventory;
+    List<Item> inventory;
     public int injuries;
     int exhaustedCnter;
     HidingSpot location = null;
@@ -16,6 +17,7 @@ public class Player {
         status = PlayerStatus.PANICKING;
         stress = 80;
         this.heartRate = setHeartRate(150, 180);
+        this.inventory = new ArrayList<>();
     }
 
     private int setHeartRate(int min, int max) {
@@ -107,6 +109,21 @@ public class Player {
         };
     }
 
+    public void addToInv(Item i) {
+        this.inventory.add(i);
+    }
+    public void removeFromInt(Item i) {
+        this.currentRoom.addItem(i);
+        this.inventory.remove(i);
+    }
+    public Item getFromInv(int id) {
+        for (Item i : inventory) {
+            if (i.id == id) {
+                return i;
+            }
+        }
+        return null;
+    }
     public void Stats() {
 
     }

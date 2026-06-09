@@ -8,6 +8,7 @@ public class Exit {
     Interactable dependent;
     Room targetRoom;
     ExitRequirement requirement;
+    String card_perm;
 
     public Exit(String name) {
         this.name = name;
@@ -41,6 +42,9 @@ public class Exit {
     public void setRequirement(ExitRequirement req) {
         this.requirement = req;
     }
+    public void setCard_perm(String p) {
+        this.card_perm = p;
+    }
     public boolean canUseExit(Player p) {
         switch (this.requirement) {
             case UNLOCKED:
@@ -51,7 +55,14 @@ public class Exit {
                 }
                 break;
             case HAS_KEYCARD:
-                break;
+                for (Item i : p.inventory) {
+                    if (i instanceof Keycard) {
+                        if (Objects.equals(((Keycard) i).permissions, this.card_perm) || Objects.equals(((Keycard) i).permissions, "Master")) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
             case VENT_OPEN:
                 if (dependent instanceof VentCover vent) {
                     return Objects.equals(vent.state, "OPEN");
@@ -77,6 +88,8 @@ public class Exit {
                 }
             case VENT_OPEN:
                 return "ACCESS DENIED | Vent is not open";
+            case HAS_KEYCARD:
+                return "ACCESS DENIED | Required keycard not held";
             default:
                 return "ACCESS DENIED | Requirements unfulfilled";
         }

@@ -10,6 +10,7 @@ public class Game {
     Facility facility;
     boolean gameRunning;
     ArrayList<Integer> IDs = new ArrayList<>();
+    ArrayList<Document> docs = new ArrayList<>();
     Map<Integer, String> logs = new LinkedHashMap<>();
 
     public Game(int maxTurns) {
@@ -17,7 +18,7 @@ public class Game {
         this.IDs.add(0);
         this.turn = 0;
         this.maxTurns = maxTurns;
-        this.facility = new Facility(this, 0);
+        this.facility = new Facility(this, 1);
         this.player = new Player();
         gameRunning = false;
     }
@@ -28,6 +29,9 @@ public class Game {
             case BLACK:
                 addition = "\u001B[30m";
                 break;
+            case RED:
+                addition = "\u001B[31m";
+                break;
             case GREEN:
                 addition = "\u001B[32m";
                 break;
@@ -36,6 +40,9 @@ public class Game {
                 break;
             case CYAN:
                 addition = "\u001B[36m";
+                break;
+            case PURPLE:
+                addition = "\u001B[45m";
                 break;
             default:
                 break;
@@ -48,6 +55,9 @@ public class Game {
             case BLACK:
                 addition = "\u001B[30m";
                 break;
+            case RED:
+                addition = "\u001B[31m";
+                break;
             case GREEN:
                 addition = "\u001B[32m";
                 break;
@@ -56,6 +66,9 @@ public class Game {
                 break;
             case CYAN:
                 addition = "\u001B[36m";
+                break;
+            case PURPLE:
+                addition = "\u001B[45m";
                 break;
             default:
                 break;
@@ -120,40 +133,53 @@ public class Game {
                 String id;
                 //Argument-command input
                 switch (input.substring(0, input.indexOf(" ")).toLowerCase()) {
-                    case "inspect":
+                    case "inspect" -> {
                         id = input.substring(input.indexOf(" "));
                         try {
                             int id_num = Integer.parseInt(id.strip());
-                            if (!this.IDs.contains(id_num)) {
+                            if (!this.IDs.contains(id_num) && player.getFromInv(id_num) == null) {
                                 id_num /= 0;
                             }
-                            Interactable obj = find_object(id_num);
-                            println("> NAME: " + obj.name);
-                            println("> DESC: " + obj.desc);
-                            println("> STATE: " + obj.state);
-                            if (obj instanceof Keypad o) {
-                                println("> ENCRYPTION: [" + encode(String.valueOf(o.correctCode)) + "]");
+                            if (player.getFromInv(id_num) != null) {
+                                Item i = player.getFromInv(id_num);
+                                println("> NAME: " + i.name);
+                                println("> IN INVENTORY");
+                                if (i instanceof Document) {
+                                    println("> ITEM TYPE: DOCUMENT");
+                                } else if (i instanceof Tool) {
+                                    println("> ITEM TYPE: TOOL");
+                                } else if (i instanceof Keycard) {
+                                    println("> ITEM TYPE: KEYCARD");
+                                    println("> ALLOWANCE: " + ((Keycard) i).permissions.toUpperCase());
+                                }
+                            } else {
+                                Interactable obj = find_object(id_num);
+                                println("> NAME: " + obj.name);
+                                println("> STATE: " + obj.state);
+                                if (obj instanceof Keypad o) {
+                                    println("> ENCRYPTION: [" + encode(String.valueOf(o.correctCode)) + "]");
+                                }
+                                if (obj instanceof EmergencyKit kit) {
+                                    println("> USES: " + kit.usesRemaining);
+                                }
+                                if (obj instanceof WaterDispenser disp) {
+                                    println("> USES: " + disp.usesRemaining);
+                                }
+                                if (obj instanceof Bed bed) {
+                                    println("> TURNS FOR USE: " + bed.turnCost);
+                                }
+                                if (obj instanceof Window wnd) {
+                                    println("> VISIBILITY: " + wnd.visibility);
+                                    println("> RISK: " + wnd.risk);
+                                }
+                                println(">");
                             }
-                            if (obj instanceof EmergencyKit kit) {
-                                println("> USES: " + kit.usesRemaining);
-                            }
-                            if (obj instanceof WaterDispenser disp) {
-                                println("> USES: " + disp.usesRemaining);
-                            }
-                            if (obj instanceof Bed bed) {
-                                println("> TURNS FOR USE: " + bed.turnCost);
-                            }
-                            if (obj instanceof Window wnd) {
-                                println("> VISIBILITY: " + wnd.visibility);
-                                println("> RISK: " + wnd.risk);
-                            }
-                            println(">");
                         } catch (Exception e) {
                             println("> INVALID OBJECT ID | You must put in a valid object ID");
                         }
                         useTurn("DEFAULT");
-                        break;
-                    case "unlock":
+                    }
+                    case "unlock" -> {
                         id = input.substring(input.indexOf(" "));
                         try {
                             int id_num = Integer.parseInt(id.strip());
@@ -173,8 +199,8 @@ public class Game {
                             println("> INVALID OBJECT ID | You must put in a valid object ID");
                         }
                         useTurn("DEFAULT");
-                        break;
-                    case "disable":
+                    }
+                    case "disable" -> {
                         id = input.substring(input.indexOf(" "));
                         try {
                             int id_num = Integer.parseInt(id.strip());
@@ -193,7 +219,8 @@ public class Game {
                         }
                         useTurn("DEFAULT");
                         break;
-                    case "enable":
+                    }
+                    case "enable" -> {
                         id = input.substring(input.indexOf(" "));
                         try {
                             int id_num = Integer.parseInt(id.strip());
@@ -211,8 +238,8 @@ public class Game {
                             println("> INVALID OBJECT ID | You must put in a valid object ID");
                         }
                         useTurn("DEFAULT");
-                        break;
-                    case "toggle":
+                    }
+                    case "toggle" -> {
                         id = input.substring(input.indexOf(" "));
                         try {
                             int id_num = Integer.parseInt(id.strip());
@@ -230,8 +257,8 @@ public class Game {
                             println("> INVALID OBJECT ID | You must put in a valid object ID");
                         }
                         useTurn("DEFAULT");
-                        break;
-                    case "bypass":
+                    }
+                    case "bypass" -> {
                         String code;
                         Boolean success_A = false, success_B = false;
                         String remainder = input.substring(input.indexOf(" ")).strip();
@@ -273,12 +300,13 @@ public class Game {
                             }
                         }
                         useTurn("DEFAULT");
-                        break;
-                    case "decrypt":
+                    }
+                    case "decrypt" -> {
+                        String code;
                         code = input.substring(input.indexOf(" "), input.length()).strip();
                         println("> " + decode(code));
-                        break;
-                    case "reset":
+                    }
+                    case "reset" -> {
                         id = input.substring(input.indexOf(" "));
                         try {
                             int id_num = Integer.parseInt(id.strip());
@@ -297,8 +325,8 @@ public class Game {
                             println("> INVALID OBJECT ID | You must put in a valid object ID");
                         }
                         useTurn("DEFAULT");
-                        break;
-                    case "cass-go":
+                    }
+                    case "cass-go" -> {
                         String[] directions = {"north", "south", "east", "west"};
                         String dir = input.substring(input.indexOf(" ")).strip().toLowerCase();
                         if (Arrays.asList(directions).contains(dir)) {
@@ -347,8 +375,8 @@ public class Game {
                             println("> INVALID DIRECTION | The direction must be one of the following: north, south, east, west");
                             useTurn("DEFAULT");
                         }
-                        break;
-                    case "cass-use":
+                    }
+                    case "cass-use" -> {
                         if (!this.player.currentRoom.canActInRoom(player)) {
                             println("> " + this.player.currentRoom.actionFail(player));
                         } else if (this.player.isSleeping()) {
@@ -410,8 +438,8 @@ public class Game {
                             }
                         }
                         useTurn("DEFAULT");
-                        break;
-                    case "cass-hide":
+                    }
+                    case "cass-hide" -> {
                         id = input.substring(input.indexOf(" "));
                         try {
                             int id_num = Integer.parseInt(id.strip());
@@ -429,15 +457,124 @@ public class Game {
                             println("> INVALID OBJECT ID | You must put in a valid object ID");
                         }
                         useTurn("DEFAULT");
-                        break;
-                    default:
+                    }
+                    case "cass-read" -> {
+                        //FIXME: In-progress - still needs to be tested
+                        id = input.substring(input.indexOf(" "));
+                        try {
+                            int id_num = Integer.parseInt(id.strip());
+                            if (!this.IDs.contains(id_num)) {
+                                id_num /= 0;
+                            }
+                            Item obj = player.getFromInv(id_num);
+                            if (obj instanceof Document d) {
+                                if (d.read) {
+                                    println("> ERROR | Document has already been read");
+                                } else {
+                                    this.docs.add(d);
+                                    d.read = true;
+                                    println("> ACTION SUCCESS | Document info has been stored - check in Documents View");
+                                }
+                            } else {
+                                println("> UNAPPLICABLE OBJECT | This command must reference a document");
+                                println("> ");
+                            }
+                        } catch (Exception e) {
+                            println("> INVALID OBJECT ID | You must put in a valid object ID");
+                        }
+                        useTurn("DEFAULT");
+                    }
+                    case "cass-search" -> {
+                        //FIXME: In-progress - still needs to be tested
+                        id = input.substring(input.indexOf(" "));
+                        try {
+                            int id_num = Integer.parseInt(id.strip());
+                            if (!this.IDs.contains(id_num)) {
+                                id_num /= 0;
+                            }
+                            Interactable obj = find_object(id_num);
+                            if (obj instanceof Searchable s) {
+                                if (s.contents.size() == 0) {
+                                    println("> ERROR | " + s.name + " is empty");
+                                } else {
+                                    println(">\n> " + s.name.toUpperCase() + " CONTENTS: ");
+                                    for (Item i : s.contents) {
+                                        println("> ID: " + i.id);
+                                    }
+                                    println(">");
+                                }
+                            } else {
+                                println("> UNAPPLICABLE OBJECT | This command must reference a searchable object");
+                                println("> ");
+                            }
+                        } catch (Exception e) {
+                            println("> INVALID OBJECT ID | You must put in a valid object ID");
+                        }
+                        useTurn("DEFAULT");
+                    }
+                    case "cass-take" -> {
+                        //FIXME: In-progress - still needs to be tested
+                        String rem;
+                        int con_id = 0, itm_id = 0;
+                        Boolean success_A = false, success_B = false;
+                        String remainder = input.substring(input.indexOf(" ")).strip();
+                        if (!remainder.contains(" ")) {
+                            println("> INVALID COMMAND SYNTAX | Requires both the ID of the container and the ID of the item to take");
+                            break;
+                        } else {
+                            id = remainder.substring(0, remainder.indexOf(" "));
+                            rem = remainder.substring(remainder.indexOf(" "));
+                        }
+                        try {
+                            con_id = Integer.parseInt(id.strip());
+                        } catch (Exception e) {
+                            println("> INVALID OBJECT ID | You must put in a valid object id");
+                        }
+                        try {
+                            itm_id = Integer.parseInt(rem.strip());
+                        } catch (Exception e) {
+                            println(" INVALID OBJECT ID | You must put in a valid object id");
+                        }
+                        if (!this.IDs.contains(con_id)) {
+                            println("> INVALID OBJECT ID | You must put in a valid object id");
+                        }
+                        Interactable obj = find_object(con_id);
+                        if (obj == null) {
+                            println("> INVALID OBJECT ID | You must put in a valid object id");
+                        } else if (obj instanceof Searchable s) {
+                            if (((Searchable) obj).getItem(itm_id) == null) {
+                                println("> ERROR | The item doesn't exist in this object");
+                            } else {
+                                player.addToInv(((Searchable) obj).getItem(itm_id));
+                                println("> ACTION SUCCESS | Item added to inventory");
+                            }
+                        } else {
+                            println("> UNAPPLICABLE OBJECT | This command must reference a searchable object");
+                            println("> ");
+                        }
+                        useTurn("DEFAULT");
+                    }
+                    default -> {
                         println("> INVALID COMMAND | Type in 'help' to view a list of commands.");
                         useTurn("DEFAULT");
+                    }
                 }
             } else {
                 //No-argument command input
-                switch(input.toLowerCase()) {
-                    case "scan":
+                switch (input.toLowerCase()) {
+                    case "inventory" -> {
+                        if (player.inventory.isEmpty()) {
+                            println("> ERROR | The inventory is empty");
+                        } else {
+                            println("> INVENTORY CONTENTS:");
+                            for (Item i : player.inventory) {
+                                println("> ID: " + i.id);
+                            }
+                        }
+                        println("> ");
+                        useTurn("DEFAULT");
+                    }
+                    case "scan" -> {
                         println("> Room: " + player.currentRoom.name);
                         println("> ");
 
@@ -455,30 +592,24 @@ public class Game {
                             println("> ");
                         }
                         useTurn("DEFAULT");
-                        break;
-                    case "quit":
+                    }
+                    case "quit" -> {
                         println("> EXITING TERMINAL VIEW");
                         player.currentView = PlayerView.DEFAULT_VIEW;
                         clearScreen();
                         useTurn("DEFAULT");
-                        break;
-                    case "look", "inspect", "unlock", "disable", "toggle", "bypass", "decrypt", "reset", "cass-use",
-                         "cass-hide", "cass-go":
+                    }
+                    case "look", "inspect", "enable", "unlock", "disable", "toggle", "bypass", "decrypt", "reset", "cass-use",
+                         "cass-hide", "cass-go", "cass-search", "cass-take", "cass-read" -> {
                         println("> INCORRECT COMMAND SYNTAX | This command requires at least 1 argument.");
                         useTurn("DEFAULT");
-                        break;
-                    case "enable":
-                        println("> INCORRECT COMMAND SYNTAX | This command requires at least 1 argument. ");
-                        useTurn("DEFAULT");
-                        break;
-                    case "cass":
+                    }
+                    case "cass" -> {
                         println("> INVALID COMMAND | Must be followed by dash and desired action. (cass-[action])");
                         useTurn("DEFAULT");
-                        break;
-                    case "time":
-                        println("> TURNS REMAINING: " + (this.maxTurns - this.turn));
-                        break;
-                    case "help":
+                    }
+                    case "time" -> println("> TURNS REMAINING: " + (this.maxTurns - this.turn));
+                    case "help" -> {
                         println("> ");
                         println("> HELP | List all commands and their descriptions");
                         println("> QUIT | Exit Terminal View");
@@ -499,10 +630,11 @@ public class Game {
                         println("> CASS-HIDE [OBJECT ID] | Instruct Cass to hide using a HidingSpot");
                         println("> ");
                         useTurn("DEFAULT");
-                        break;
-                    default:
+                    }
+                    default -> {
                         println("> INVALID COMMAND | Type in 'help' to view a list of commands.");
                         useTurn("DEFAULT");
+                    }
                 }
             }
             println(">");
@@ -535,11 +667,41 @@ public class Game {
         player.currentView = PlayerView.DEFAULT_VIEW;
     }
 
-    //TODO: Add Documents Interface/View
-    /*
     public void DocumentsInterface() {
+        println(" --- DOCUMENTS VIEW --- ");
+        print("Document IDs: ");
+        for (Document d : this.docs) {
+            if (d != this.docs.getLast()) {
+                print(d.id + ", ");
+            } else {
+                print(String.valueOf(d.id));
+            }
+        }
+        println("");
+        while (player.currentView == PlayerView.DOCUMENT_VIEW) {
+            print("\nType a Document ID to view its contents, or '0' to exit");
+            String input = scanner.nextLine();
+            try {
+                int id = Integer.parseInt(input);
+                if (id == 0) {
+                    player.currentView = PlayerView.DEFAULT_VIEW;
+                    break;
+                }
+                boolean found = false;
+                for (Document d : docs) {
+                    if (d.id == id) {
+                        found = true;
+                        println(d.contents);
+                    }
+                }
+                if (!found) {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                println("Document not found - make sure you enter a valid document ID: ");
+            }
+        }
     }
-     */
 
     public void updateLog(Object src) {
         //TODO: Implement Observer method in Interactables to return state changes
@@ -585,11 +747,12 @@ public class Game {
                     println("1. Terminal View");
                     println("2. Vitals View");
                     println("3. Comms View");
+                    println("4. Document View");
                     print("Select a number to change viewpoint (0 to exit): ");
                     String input = scanner.nextLine();
                     try {
                         int view = Integer.parseInt(input);
-                        if (view > 3 || view < 0) {
+                        if (view > 4 || view < 0) {
                             view /= 0;
                         }
                         switch (view) {
@@ -604,6 +767,9 @@ public class Game {
                                 break;
                             case 3:
                                 player.currentView = PlayerView.COMMS_VIEW;
+                                break;
+                            case 4:
+                                player.currentView = PlayerView.DOCUMENT_VIEW;
                                 break;
                         }
                     } catch (Exception e) {
@@ -627,6 +793,12 @@ public class Game {
                     System.out.println();
                     this.txt_color = ConsoleColor.DEFAULT;
                     this.VitalsInterface();
+                    useTurn("DEFAULT");
+                    continue;
+                case DOCUMENT_VIEW:
+                    System.out.println();
+                    this.txt_color = ConsoleColor.RED;
+                    this.DocumentsInterface();
                     useTurn("DEFAULT");
                     continue;
                 default:
