@@ -1,4 +1,3 @@
-import java.security.Key;
 import java.util.Objects;
 
 public class Exit {
@@ -17,9 +16,6 @@ public class Exit {
     public void setDesc(String desc) {
         this.desc = desc;
     }
-    public String getDesc() {
-        return this.desc;
-    }
 
     public void setDependent(Interactable i) {
         this.dependent = i;
@@ -28,17 +24,10 @@ public class Exit {
     public void setDirection(Direction direct) {
         this.direction = direct;
     }
-    public Direction getDirection() {
-        return this.direction;
-    }
 
     public void setTarget(Room target) {
         this.targetRoom = target;
     }
-    public Room getTarget() {
-        return this.targetRoom;
-    }
-
     public void setRequirement(ExitRequirement req) {
         this.requirement = req;
     }

@@ -10,10 +10,6 @@ public abstract class Interactable {
         this.id = id;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
     public String getState() {
         return state;
     }
@@ -22,7 +18,4 @@ public abstract class Interactable {
         this.state = state;
     }
 
-    private void useFailed() {
-
-    }
 }

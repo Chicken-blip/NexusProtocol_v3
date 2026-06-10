@@ -194,7 +194,49 @@ public class Facility {
                 roomC.addInteractable(a);
                 a = new Searchable("Maintenance Log Cabinet", main.generateID());
                 c = new Document("Repair Logs", main.generateID());
+                //Add Repair Log contents
+                ((Document) c).setContents("NEXCORP - IRONHOLD FACILITY MAINTENANCE SYSTEM\n\n" +
+                        "Work Order #438 – Opened 10/15\n" +
+                        "Location: Cell M4, Light Fixture\n" +
+                        "Issue: Flickering, intermittent failure\n" +
+                        "Status: Assigned to J. Chen\n\n" +
+                        "10/16 – Chen: Replaced bulb. No change.\n" +
+                        "10/18 – Chen: Replaced ballast. Flickering reduced but not eliminated.\n" +
+                        "10/25 – Supervisor note: Close order. Budget constraints." +
+                        "\n\n\n" +
+                        "Work Order #441 – Opened 11/2\n" +
+                        "Location: Cell M4, Light Fixture (repeat)\n" +
+                        "Issue: Complete failure\n" +
+                        "Status: Assigned to T. Miller\n\n" +
+                        "11/3 – Miller: Found loose wiring behind panel. Retightened. Operational.\n" +
+                        "11/4 – Miller: Patient reports light still flickering. Recommend full panel replacement.\n" +
+                        "11/5 – Supervisor note: Request denied. Monitor only." +
+                        "\n\n\n" +
+                        "Work Order #447 – Opened 11/9\n" +
+                        "Location: Corridor M, Camera M1\n" +
+                        "Issue: Intermittent signal loss, 3-5 minute durations\n" +
+                        "Status: Assigned to J. Chen\n\n" +
+                        "11/10 – Chen: No hardware fault found. Possible electromagnetic interference from nearby panel.\n" +
+                        "11/11 – Chen: Moved camera 2 feet. Signal stable for 48 hours.\n" +
+                        "11/13 – Open again. Same issue." +
+                        "\n\n\n" +
+                        "Work Order #452 – Opened 11/14\n" +
+                        "Location: Utility Access, Steam Pipe Junction 9B\n" +
+                        "Issue: Pressure fluctuation, audible hissing\n" +
+                        "Status: Assigned to T. Miller\n\n" +
+                        "11/15 – Miller: Tightened valve assembly. Pressure normalized.\n" +
+                        "11/16 – Miller: Recurrence. Gasket likely failing. Replacement ordered.\n" +
+                        "11/18 – Gasket arrived. Scheduled for 11/20.\n" +
+                        "\n\n\n" +
+                        "Work Order #458 – Opened 11/19\n" +
+                        "Location: Logistics Bay, Roll-Up Door\n" +
+                        "Issue: Slow operation, grinding noise\n" +
+                        "Status: Assigned to J. Chen\n\n" +
+                        "11/20 – Chen: Lubricated track. Improved but not resolved.\n" +
+                        "11/21 – Chen: Motor assembly showing wear. Replacement recommended.\n" +
+                        "11/22 – Supervisor note: Not a priority. Mark \"monitor only.\"");
                 ((Searchable) a).addItem(c);
+                roomC.addInteractable(a);
                 a = new LightSwitch("Light Switch", main.generateID());
                 roomC.setDependent(a);
                 roomC.addInteractable(a);
@@ -216,6 +258,37 @@ public class Facility {
                 roomD.addInteractable(a);
                 a = new Searchable("Shipping Manifests", main.generateID());
                 c = new Document("Manifests", main.generateID());
+                //Add Manifests contents
+                ((Document) c).setContents("NEXCORP SHIPPING MANIFEST – CONFIDENTIAL\n" +
+                        "Document No.: NX-8842-01\n" +
+                        "Destination: Ironhold Facility, Sublevel 3\n" +
+                        "Shipment Date: 11/1\n\n" +
+                        "Containers (4 total):\n" +
+                        "Container A: 12x Medical Grade Sedatives (Schedule B-IV)\n" +
+                        "Container B: 8x Industrial Solvent (Class 3 Flammable)\n" +
+                        "Container C: 2x Biometric Terminal Replacement Units\n" +
+                        "Container D: 20x Standard Issue Keycards (Engineering Access only)\n\n" +
+                        "Received by: Dr. Grant, Med-Lab\n" +
+                        "Notes: Container D short by 2 units. Discrepancy reported.\n\n\n" +
+                        "NEXCORP SHIPPING MANIFEST – CONFIDENTIAL\n" +
+                        "Document No.: NX-8842-07\n" +
+                        "Destination: Ironhold Facility, Sublevel 3\n" +
+                        "Shipment Date: 11/8\n\n" +
+                        "Containers (3 total):\n" +
+                        "Container A: 4x Security Camera Replacement Units\n" +
+                        "Container B: 500ft Electrical Wiring (14 gauge)\n" +
+                        "Container C: 1x Industrial Crowbar\n\n" +
+                        "Received by: J. Chen, Logistics\n" +
+                        "Notes: Container G opened during transit. Contents intact.\n\n\n" +
+                        "NEXCORP SHIPPING MANIFEST – CONFIDENTIAL\n" +
+                        "Document No.: NX-8842-12\n" +
+                        "Destination: Ironhold Facility, Sublevel 3\n" +
+                        "Shipment Date: 11/15\n\n" +
+                        "Containers (2 total):\n" +
+                        "Container A: 6x Emergency Flares (Expiration: 01/2027)\n" +
+                        "Container B: 3x Vehicle Maintenance Kits (Loading Bay Truck)\n\n" +
+                        "Received by: J. Chen, Logistics\n" +
+                        "Notes: Truck maintenance scheduled for 11/22. Kits stored in truck cab.");
                 ((Searchable) a).addItem(c);
                 roomD.addInteractable(a);
                 a = new Searchable("Tool Cabinet", main.generateID());
@@ -318,11 +391,24 @@ public class Facility {
                 roomK.addInteractable(a);
                 a = new OpenSearchable("Bench", main.generateID());
                 c = new Document("Facility Brochure", main.generateID());
+                //Add Facility Brochure contents
+                ((Document) c).setContents("WELCOME TO NEXCORP'S IRONHOLD'\n\n" +
+                        "Your safety is our priority. Excellence is our standard.\n\n" +
+                        "NexCorp's Ironhold Facility' is a state-of-the-art research and containment facility dedicated to advancing human potential. Since opening in 2047, we have maintained an unbroken record of operational security.\n\n" +
+                        "Facility Guidelines:\n" +
+                        "All employees must wear visible keycards at all times\n" +
+                        "Unauthorized access to Security Office (Level 3) is strictly prohibited\n" +
+                        "Medical staff must log all controlled substance usage in Med-Lab\n" +
+                        "Maintenance requests should be submitted through the digital system\n\n" +
+                        "Emergency Procedures:\n" +
+                        "In case of evacuation, proceed to Loading Bay\n" +
+                        "In case of containment breach, follow red floor markings\n" +
+                        "In case of fire, use extinguishers located in Corridor M and Logistics Bay\n\n" +
+                        "Thank you for your commitment to NexCorp's mission. — Human Resources Department, Ironhold Facility");
                 ((OpenSearchable) a).addItem(c);
                 c = new Keycard("Employee Badge", main.generateID(), "Security");
                 ((OpenSearchable) a).addItem(c);
                 roomG.addInteractable(a);
-                //Add Searchable and Items later
 
                 b = new Exit("South Exit");
                 b.setTarget(roomF);
@@ -432,7 +518,7 @@ public class Facility {
                 b.setTarget(roomJ);
                 b.setRequirement(ExitRequirement.ALWAYS_OPEN);
                 b.setDesc("The exit continues down the vents.");
-                b.setDirection(Direction.WEST);
+                b.setDirection(Direction.SOUTH);
                 roomK.addExit(b);
 
                 b = new Exit("Vent Exit");

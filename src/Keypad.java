@@ -17,17 +17,12 @@ public class Keypad extends Interactable {
 
 
     public int generateCode(int len) {
-        int code = 0;
+        int code;
         int min = (int) Math.pow(10, len - 1);
         int max = (int) Math.pow(10, len) - 1;
         code = (int) (Math.random() * (max - min + 1));
         return min + code;
     }
-
-    public void setCode(int len) {
-        this.correctCode = generateCode(len);
-    }
-
 
     public String bypass(int code_num) {
         if (this.isSolved) {

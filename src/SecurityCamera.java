@@ -20,7 +20,7 @@ public class SecurityCamera extends Interactable {
         if (this.isActive) {
             return "ERROR | Camera already enabled";
         } else {
-            this.isActive = !this.isActive;
+            this.isActive = true;
             this.state = "ACTIVE";
             turnsSpent = 0;
             return "ACCESS GRANTED | Camera enabled";
@@ -29,10 +29,10 @@ public class SecurityCamera extends Interactable {
     public String disable() {
         if (!this.isActive) {
             return "ERROR | Camera already disabled";
-        } else if (this.state == "ALERTED") {
+        } else if (Objects.equals(this.state, "ALERTED")) {
             return "REQUEST DENIED | Must resolve security alert first";
         } else {
-            this.isActive = !this.isActive;
+            this.isActive = false;
             this.state = "INACTIVE";
             return "ACCESS GRANTED | Camera disabled";
         }

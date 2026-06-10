@@ -43,12 +43,16 @@ public class Player {
     }
 
     public void setStatus(int val) {
-        if (this.exhaustedCnter >= 3) {
-            this.status = PlayerStatus.EXHAUSTED;
-        } else if (this.stress >= 60) {
-            this.status = PlayerStatus.PANICKING;
-        } else {
-            this.status = PlayerStatus.CALM;
+        switch (val) {
+        default -> {
+            if (this.exhaustedCnter >= 3) {
+                this.status = PlayerStatus.EXHAUSTED;
+            } else if (this.stress >= 60) {
+                this.status = PlayerStatus.PANICKING;
+            } else {
+                this.status = PlayerStatus.CALM;
+            }
+            }
         }
     }
 
@@ -85,9 +89,7 @@ public class Player {
 
     public boolean canAct() {
         return switch (status) {
-            case PANICKING -> false;
-            case EXHAUSTED -> false;
-            case RESTING -> false;
+            case PANICKING, RESTING, EXHAUSTED -> false;
             default -> true;
         };
     }
@@ -112,10 +114,6 @@ public class Player {
     public void addToInv(Item i) {
         this.inventory.add(i);
     }
-    public void removeFromInt(Item i) {
-        this.currentRoom.addItem(i);
-        this.inventory.remove(i);
-    }
     public Item getFromInv(int id) {
         for (Item i : inventory) {
             if (i.id == id) {
@@ -123,8 +121,5 @@ public class Player {
             }
         }
         return null;
-    }
-    public void Stats() {
-
     }
 }

@@ -46,5 +46,13 @@ Dev notes:
 6/9/2026: Done "Vitals" and "Comms", now "Document" is all that's left
 6/9/2026: Technically done all the views, but still need to add content for the Document objects
 6/9/2026: Also need to fix the Exits for the Atrium Vent - for some reason you can only head west instead of down!
-6/9/2026: Also fixed a type for the Bed action success
-6/9/2026: Probably other bugs that need to be caught - but that's for another time!z
+6/9/2026: Also fixed a typo for the Bed action success
+6/9/2026: Probably other bugs that need to be caught - but that's for another time!
+
+6/10/2026: Fixed the Atrium Vent connection - now to add content for the Documents
+6/10/2026: Also need to add new 'help' lines for 'cass-search', 'cass-read', 'open', and others - whatever I find, I guess
+6/10/2026: Guess I should fix cass-search and cass-read, while I'm at it. Cass can't read and search if the room is too dark
+6/10/2026: Added the contents for the 'Repair Logs', know for certain that Document View works!
+6/10/2026: Also added the new lines for 'help' - at least, the ones that came to mind
+6/10/2026: Now to add the other doc contents...
+6/10/2026: All doc contents added! Think I can rebuild now!

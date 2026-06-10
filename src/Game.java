@@ -109,7 +109,40 @@ public class Game extends JFrame {
         JPanel termPanel = getTermJPanel();
         JPanel commsPanel = getCommsJPanel();
         JPanel vitalPanel = getVitalJPanel();
+        JPanel docPanel = getDocPanel();
 
+        cards.add(menuPanel, "Menu View");
+        cards.add(termPanel, "Terminal View");
+        cards.add(commsPanel, "Comms View");
+        cards.add(vitalPanel, "Vitals View");
+        cards.add(docPanel, "Document View");
+
+        this.add(cards, BorderLayout.CENTER);
+
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(150, 150, 150)
+                                .addComponent(cards, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(150, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(100, 100, 100)
+                                .addComponent(cards, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(100, Short.MAX_VALUE))
+        );
+
+        pack();
+
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private JPanel getDocPanel() {
         JPanel docPanel = new JPanel();
 
         JTextArea doc_content = new JTextArea(5, 20);
@@ -175,36 +208,7 @@ public class Game extends JFrame {
                                 .addComponent(ext)
                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        cards.add(menuPanel, "Menu View");
-        cards.add(termPanel, "Terminal View");
-        cards.add(commsPanel, "Comms View");
-        cards.add(vitalPanel, "Vitals View");
-        cards.add(docPanel, "Document View");
-
-        this.add(cards, BorderLayout.CENTER);
-
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(150, 150, 150)
-                                .addComponent(cards, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(150, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(100, 100, 100)
-                                .addComponent(cards, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(100, Short.MAX_VALUE))
-        );
-
-        pack();
-
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        return docPanel;
     }
 
     private JPanel getVitalJPanel() {
@@ -760,97 +764,136 @@ public class Game extends JFrame {
                         }
                         case "cass-read" -> {
                             //FIXME: In-progress - still needs to be tested
-                            id = cmd.substring(cmd.indexOf(" "));
-                            try {
-                                int id_num = Integer.parseInt(id.strip());
-                                if (!IDs.contains(id_num)) {
-                                    throw new ArithmeticException();
+                            if (!player.currentRoom.canActInRoom(player)) {
+                                term_println("> " + player.currentRoom.actionFail(player), txt);
+                            } else if (player.isSleeping()) {
+                                term_println("> " + player.actFail(), txt);
+                            } else {
+                                //Stop hiding
+                                if (player.status == PlayerStatus.HIDING) {
+                                    player.setStatus(PlayerStatus.CALM);
+                                    player.setStatus();
+                                    player.location = null;
+                                    term_println("> NOTE: Cass is no longer hiding.", txt);
                                 }
-                                Item obj = player.getFromInv(id_num);
-                                if (obj instanceof Document d) {
-                                    if (d.read) {
-                                       term_println("> ERROR | Document has already been read", txt);
-                                    } else {
-                                        docs.add(d);
-                                        d.read = true;
-                                       term_println("> ACTION SUCCESS | Document info has been stored - check in Documents View", txt);
+                                id = cmd.substring(cmd.indexOf(" "));
+                                try {
+                                    int id_num = Integer.parseInt(id.strip());
+                                    if (!IDs.contains(id_num)) {
+                                        throw new ArithmeticException();
                                     }
-                                } else {
-                                   term_println("> UNAPPLICABLE OBJECT | This command must reference a document", txt);
-                                   term_println("> ", txt);
+                                    Item obj = player.getFromInv(id_num);
+                                    if (obj instanceof Document d) {
+                                        if (d.read) {
+                                            term_println("> ERROR | Document has already been read", txt);
+                                        } else {
+                                            docs.add(d);
+                                            d.read = true;
+                                            term_println("> ACTION SUCCESS | Document info has been stored - check in Documents View", txt);
+                                        }
+                                    } else {
+                                        term_println("> UNAPPLICABLE OBJECT | This command must reference a document", txt);
+                                        term_println("> ", txt);
+                                    }
+                                } catch (Exception ef) {
+                                    term_println("> INVALID OBJECT ID | You must put in a valid object ID", txt);
                                 }
-                            } catch (Exception ef) {
-                               term_println("> INVALID OBJECT ID | You must put in a valid object ID", txt);
                             }
                             useTurn("DEFAULT", txt);
                         }
                         case "cass-search" -> {
                             //FIXME: In-progress - still needs to be tested
-                            id = cmd.substring(cmd.indexOf(" "));
-                            try {
-                                int id_num = Integer.parseInt(id.strip());
-                                if (!IDs.contains(id_num)) {
-                                    throw new ArithmeticException();
+                            if (!player.currentRoom.canActInRoom(player)) {
+                                term_println("> " + player.currentRoom.actionFail(player), txt);
+                            } else if (player.isSleeping()) {
+                                term_println("> " + player.actFail(), txt);
+                            } else {
+                                //Stop hiding
+                                if (player.status == PlayerStatus.HIDING) {
+                                    player.setStatus(PlayerStatus.CALM);
+                                    player.setStatus();
+                                    player.location = null;
+                                    term_println("> NOTE: Cass is no longer hiding.", txt);
                                 }
-                                Interactable obj = find_object(id_num);
-                                if (obj instanceof Searchable s) {
-                                    if (s.contents.isEmpty()) {
-                                       term_println("> ERROR | " + s.name + " is empty", txt);
-                                    } else {
-                                       term_println(">\n> " + s.name.toUpperCase() + " CONTENTS: ", txt);
-                                        for (Item i : s.contents) {
-                                           term_println("> ID: " + i.id, txt);
-                                        }
-                                       term_println(">", txt);
+                                id = cmd.substring(cmd.indexOf(" "));
+                                try {
+                                    int id_num = Integer.parseInt(id.strip());
+                                    if (!IDs.contains(id_num)) {
+                                        throw new ArithmeticException();
                                     }
-                                } else {
-                                   term_println("> UNAPPLICABLE OBJECT | This command must reference a searchable object", txt);
-                                   term_println("> ", txt);
+                                    Interactable obj = find_object(id_num);
+                                    if (obj instanceof Searchable s) {
+                                        if (s.contents.isEmpty()) {
+                                            term_println("> ERROR | " + s.name + " is empty", txt);
+                                        } else {
+                                            term_println(">\n> " + s.name.toUpperCase() + " CONTENTS: ", txt);
+                                            for (Item i : s.contents) {
+                                                term_println("> ID: " + i.id, txt);
+                                            }
+                                            term_println(">", txt);
+                                        }
+                                    } else {
+                                        term_println("> UNAPPLICABLE OBJECT | This command must reference a searchable object", txt);
+                                        term_println("> ", txt);
+                                    }
+                                } catch (Exception ef) {
+                                    term_println("> INVALID OBJECT ID | You must put in a valid object ID", txt);
                                 }
-                            } catch (Exception ef) {
-                               term_println("> INVALID OBJECT ID | You must put in a valid object ID", txt);
                             }
                             useTurn("DEFAULT", txt);
                         }
                         case "cass-take" -> {
                             //FIXME: In-progress - still needs to be tested
-                            String rem;
-                            int con_id = 0, itm_id = 0;
-                            Boolean success_A = false, success_B = false;
-                            String remainder = cmd.substring(cmd.indexOf(" ")).strip();
-                            if (!remainder.contains(" ")) {
-                               term_println("> INVALID COMMAND SYNTAX | Requires both the ID of the container and the ID of the item to take", txt);
-                                break;
+                            if (!player.currentRoom.canActInRoom(player)) {
+                                term_println("> " + player.currentRoom.actionFail(player), txt);
+                            } else if (player.isSleeping()) {
+                                term_println("> " + player.actFail(), txt);
                             } else {
-                                id = remainder.substring(0, remainder.indexOf(" "));
-                                rem = remainder.substring(remainder.indexOf(" "));
-                            }
-                            try {
-                                con_id = Integer.parseInt(id.strip());
-                            } catch (Exception ef) {
-                               term_println("> INVALID OBJECT ID | You must put in a valid object id", txt);
-                            }
-                            try {
-                                itm_id = Integer.parseInt(rem.strip());
-                            } catch (Exception ef) {
-                               term_println(" INVALID OBJECT ID | You must put in a valid object id", txt);
-                            }
-                            if (!IDs.contains(con_id)) {
-                               term_println("> INVALID OBJECT ID | You must put in a valid object id", txt);
-                            }
-                            Interactable obj = find_object(con_id);
-                            if (obj == null) {
-                               term_println("> INVALID OBJECT ID | You must put in a valid object id", txt);
-                            } else if (obj instanceof Searchable s) {
-                                if (((Searchable) obj).getItem(itm_id) == null) {
-                                   term_println("> ERROR | The item doesn't exist in this object", txt);
-                                } else {
-                                    player.addToInv(((Searchable) obj).getItem(itm_id));
-                                   term_println("> ACTION SUCCESS | Item added to inventory", txt);
+                                //Stop hiding
+                                if (player.status == PlayerStatus.HIDING) {
+                                    player.setStatus(PlayerStatus.CALM);
+                                    player.setStatus();
+                                    player.location = null;
+                                    term_println("> NOTE: Cass is no longer hiding.", txt);
                                 }
-                            } else {
-                               term_println("> UNAPPLICABLE OBJECT | This command must reference a searchable object", txt);
-                               term_println("> ", txt);
+                                String rem;
+                                int con_id = 0, itm_id = 0;
+                                Boolean success_A = false, success_B = false;
+                                String remainder = cmd.substring(cmd.indexOf(" ")).strip();
+                                if (!remainder.contains(" ")) {
+                                    term_println("> INVALID COMMAND SYNTAX | Requires both the ID of the container and the ID of the item to take", txt);
+                                    break;
+                                } else {
+                                    id = remainder.substring(0, remainder.indexOf(" "));
+                                    rem = remainder.substring(remainder.indexOf(" "));
+                                }
+                                try {
+                                    con_id = Integer.parseInt(id.strip());
+                                } catch (Exception ef) {
+                                    term_println("> INVALID OBJECT ID | You must put in a valid object id", txt);
+                                }
+                                try {
+                                    itm_id = Integer.parseInt(rem.strip());
+                                } catch (Exception ef) {
+                                    term_println(" INVALID OBJECT ID | You must put in a valid object id", txt);
+                                }
+                                if (!IDs.contains(con_id)) {
+                                    term_println("> INVALID OBJECT ID | You must put in a valid object id", txt);
+                                }
+                                Interactable obj = find_object(con_id);
+                                if (obj == null) {
+                                    term_println("> INVALID OBJECT ID | You must put in a valid object id", txt);
+                                } else if (obj instanceof Searchable s) {
+                                    if (((Searchable) obj).getItem(itm_id) == null) {
+                                        term_println("> ERROR | The item doesn't exist in this object", txt);
+                                    } else {
+                                        player.addToInv(((Searchable) obj).getItem(itm_id));
+                                        term_println("> ACTION SUCCESS | Item added to inventory", txt);
+                                    }
+                                } else {
+                                    term_println("> UNAPPLICABLE OBJECT | This command must reference a searchable object", txt);
+                                    term_println("> ", txt);
+                                }
                             }
                             useTurn("DEFAULT", txt);
                         }
@@ -923,12 +966,17 @@ public class Game extends JFrame {
                            term_println("> BYPASS [OBJECT ID] [ENTERED CODE] | Attempts to bypass a keypad with the entered code", txt);
                            term_println("> DECRYPT [ENTERED CODE] | Decrypts an encrypted code from a Keypad", txt);
                            term_println("> RESET [OBJECT ID] | Resets a security camera, removing any active alerts", txt);
+                           term_println("> OPEN [OBJECT ID] | Open a closed container", txt);
+                           term_println("> CLOSE [OBJECT ID] | CLose an open container, if applicable", txt);
                            term_println("> ", txt);
                            term_println("> CASS-GO [DIRECTION] | Move Cass to the connected location in the given direction", txt);
                            term_println("> CASS-USE [OBJECT ID] | Instruct Cass to use the object according to its functionality", txt);
                            term_println("> CASS-HIDE [OBJECT ID] | Instruct Cass to hide using a HidingSpot", txt);
+                           term_println("> CASS-SEARCH [OBJECT ID] | Instruct Cass to look through a container", txt);
+                           term_println("> CASS-TAKE [OBJECT_A ID] [OBJECT_B ID] | Instruct Cass to get Object_B, an item, from Object_A, a container", txt);
+                           term_println("> CASS-READ [DOCUMENT ID] | Instruct Cass to read the Document, sending its contents to Document View", txt);
                            term_println("> ", txt);
-                            useTurn("DEFAULT", txt);
+                           useTurn("DEFAULT", txt);
                         }
                         default -> {
                            term_println("> INVALID COMMAND | Type in 'help' to view a list of commands.", txt);

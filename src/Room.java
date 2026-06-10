@@ -46,11 +46,9 @@ public class Room {
     }
     public String actionFail(Player player) {
         // FIXME: 5/30/2026 : Add more cases in the future, if needed
-        switch (this.act_req) {
-            case LIGHTS_ON:
-                return "ACTION UNAVAILABLE | Room lights need to be turned on";
-            default:
-                return "ACTION UNAVAILABLE | Requirements unfulfilled.";
-        }
+        return switch (this.act_req) {
+            case LIGHTS_ON -> "ACTION UNAVAILABLE | Room lights need to be turned on";
+            default -> "ACTION UNAVAILABLE | Requirements unfulfilled.";
+        };
     }
 }

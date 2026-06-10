@@ -7,7 +7,7 @@ public class Searchable extends Interactable {
     1 - OPEN
     2 - CLOSED
      */
-    List<Item> contents = new ArrayList<Item>();
+    List<Item> contents = new ArrayList<>();
     public Searchable(String name, int id) {
         super(name, id);
         state = "CLOSED";
@@ -26,9 +26,6 @@ public class Searchable extends Interactable {
         return null;
     }
 
-    public List<Item> getContents() {
-        return contents;
-    }
     public String open() {
         if (Objects.equals(this.state, "OPEN")) {
             return "ERROR | Container is already open";
