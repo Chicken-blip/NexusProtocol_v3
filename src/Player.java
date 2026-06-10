@@ -54,7 +54,7 @@ public class Player {
 
     public void setStatus() {
         if (status == PlayerStatus.RESTING) {
-            if (this.bed.turnCount >= this.bed.turnCost) {
+            if (bed.turnCount > bed.turnCost) {
                 //Completed sleeping
                 this.bed.turnCount = 0;
                 this.bed = null;

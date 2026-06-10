@@ -9,7 +9,7 @@ public class Facility {
         main = game;
         this.rooms = new ArrayList<>();
         //Map 0: 3-Room test map
-        Room roomA, roomB, roomC, roomD, roomE, roomF, roomG, roomH;
+        Room roomA, roomB, roomC, roomD, roomE, roomF, roomG, roomH, roomI, roomJ, roomK, roomL, roomM, roomN, roomO, roomP;
         Interactable a;
         Exit b;
         Item c;
@@ -106,6 +106,14 @@ public class Facility {
                 roomG.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
                 roomH = new Room("Security Office");
                 roomH.setActionRequirement(ActionRequirement.LIGHTS_ON);
+                roomI = new Room("Vents");
+                roomI.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
+                roomJ = new Room("Vents");
+                roomJ.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
+                roomK = new Room("Vents");
+                roomK.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
+                roomL = new Room("Vents");
+                roomL.setActionRequirement(ActionRequirement.ALWAYS_ACTIONABLE);
 
                 a = new LockedDoor("Reinforced Door", main.generateID(), 3);
                 roomA.addInteractable(a);
@@ -137,7 +145,7 @@ public class Facility {
                 roomB.addInteractable(a);
                 a = new VentCover("Vent Cover", main.generateID(), 3);
                 roomB.addInteractable(a);
-                //Also add Trash Bin in this room
+                roomI.addInteractable(a);
                 a = new OpenSearchable("Trash Bin", main.generateID());
                 roomB.addInteractable(a);
 
@@ -168,6 +176,14 @@ public class Facility {
                 b.setDirection(Direction.EAST);
                 b.setRequirement(ExitRequirement.UNLOCKED);
                 b.setDesc("The keypad-locked exit leads to the med-lab.");
+                roomB.addExit(b);
+
+                b = new Exit("Vent Entrance");
+                b.setTarget(roomI);
+                b.setRequirement(ExitRequirement.VENT_OPEN);
+                b.setDirection(Direction.UP);
+                b.setDependent(roomI.roomObjects.getFirst());
+                b.setDesc("The exit leads to the vents above this room.");
                 roomB.addExit(b);
 
                 rooms.add(roomB);
@@ -253,6 +269,7 @@ public class Facility {
 
                 a = new VentCover("Vent Cover", main.generateID(), 3);
                 roomF.addInteractable(a);
+                roomJ.addInteractable(a);
                 a = new EmergencyKit("Medical Supplies", main.generateID(), 2, new String[] {"SEDATIVE", "SEDATIVE", "BANDAGES"});
                 roomF.addInteractable(a);
                 a = new Searchable("Drug Cabinet", main.generateID());
@@ -282,6 +299,14 @@ public class Facility {
                 b.setDirection(Direction.EAST);
                 roomF.addExit(b);
 
+                b = new Exit("Vent Entrance");
+                b.setTarget(roomJ);
+                b.setRequirement(ExitRequirement.VENT_OPEN);
+                b.setDirection(Direction.UP);
+                b.setDependent(roomJ.roomObjects.getFirst());
+                b.setDesc("The exit leads to the vents above this room.");
+                roomF.addExit(b);
+
                 rooms.add(roomF);
 
                 a = new WaterDispenser("Water Dispenser", main.generateID(), 7);
@@ -290,6 +315,7 @@ public class Facility {
                 roomG.addInteractable(a);
                 a = new VentCover("Vent Cover", main.generateID(), 5);
                 roomG.addInteractable(a);
+                roomK.addInteractable(a);
                 a = new OpenSearchable("Bench", main.generateID());
                 c = new Document("Facility Brochure", main.generateID());
                 ((OpenSearchable) a).addItem(c);
@@ -312,12 +338,21 @@ public class Facility {
                 b.setDirection(Direction.WEST);
                 roomG.addExit(b);
 
+                b = new Exit("Vent Entrance");
+                b.setTarget(roomK);
+                b.setRequirement(ExitRequirement.VENT_OPEN);
+                b.setDirection(Direction.UP);
+                b.setDependent(roomK.roomObjects.getFirst());
+                b.setDesc("The exit leads to the vents above this room.");
+                roomG.addExit(b);
+
                 rooms.add(roomG);
 
                 a = new LightSwitch("Security Office Light Switch", main.generateID());
                 roomH.addInteractable(a);
                 a = new VentCover("Vent Cover", main.generateID(), 3);
                 roomH.addInteractable(a);
+                roomL.addInteractable(a);
                 a = new Searchable("Filing Cabinet", main.generateID());
                 roomH.addInteractable(a);
                 a = new Searchable("Shift Log Binder", main.generateID());
@@ -335,7 +370,85 @@ public class Facility {
                 b.setDirection(Direction.WEST);
                 roomH.addExit(b);
 
+                b = new Exit("Vent Entrance");
+                b.setTarget(roomL);
+                b.setRequirement(ExitRequirement.VENT_OPEN);
+                b.setDirection(Direction.UP);
+                b.setDependent(roomL.roomObjects.getFirst());
+                b.setDesc("The exit leads to the vents above this room.");
+                roomH.addExit(b);
+
                 rooms.add(roomH);
+
+                //Add Vent Room exits
+                b = new Exit("Vent Exit");
+                b.setTarget(roomB);
+                b.setRequirement(ExitRequirement.VENT_OPEN);
+                b.setDependent(roomI.roomObjects.getFirst());
+                b.setDesc("The exit leads down to Corridor M.");
+                b.setDirection(Direction.DOWN);
+                roomI.addExit(b);
+                b = new Exit("Vent Connection");
+                b.setTarget(roomJ);
+                b.setRequirement(ExitRequirement.ALWAYS_OPEN);
+                b.setDesc("The exit continues down the vents.");
+                b.setDirection(Direction.EAST);
+                roomI.addExit(b);
+
+                b = new Exit("Vent Exit");
+                b.setTarget(roomF);
+                b.setRequirement(ExitRequirement.VENT_OPEN);
+                b.setDependent(roomJ.roomObjects.getFirst());
+                b.setDesc("The exit leads down to the med-lab.");
+                b.setDirection(Direction.DOWN);
+                roomJ.addExit(b);
+                b = new Exit("Vent Connection");
+                b.setTarget(roomI);
+                b.setRequirement(ExitRequirement.ALWAYS_OPEN);
+                b.setDesc("The exit continues down the vents.");
+                b.setDirection(Direction.WEST);
+                roomJ.addExit(b);
+                b = new Exit("Vent Connection");
+                b.setTarget(roomK);
+                b.setRequirement(ExitRequirement.ALWAYS_OPEN);
+                b.setDesc("The exit continues down the vents.");
+                b.setDirection(Direction.NORTH);
+                roomJ.addExit(b);
+                b = new Exit("Vent Connection");
+                b.setTarget(roomL);
+                b.setRequirement(ExitRequirement.ALWAYS_OPEN);
+                b.setDesc("The exit continues down the vents.");
+                b.setDirection(Direction.EAST);
+                roomJ.addExit(b);
+
+                b = new Exit("Vent Exit");
+                b.setTarget(roomG);
+                b.setRequirement(ExitRequirement.VENT_OPEN);
+                b.setDependent(roomK.roomObjects.getFirst());
+                b.setDesc("The exit leads down to the atrium.");
+                b.setDirection(Direction.DOWN);
+                roomK.addExit(b);
+                b = new Exit("Vent Connection");
+                b.setTarget(roomJ);
+                b.setRequirement(ExitRequirement.ALWAYS_OPEN);
+                b.setDesc("The exit continues down the vents.");
+                b.setDirection(Direction.WEST);
+                roomK.addExit(b);
+
+                b = new Exit("Vent Exit");
+                b.setTarget(roomH);
+                b.setRequirement(ExitRequirement.VENT_OPEN);
+                b.setDependent(roomL.roomObjects.getFirst());
+                b.setDesc("The exit leads down to the Security Office.");
+                b.setDirection(Direction.DOWN);
+                roomL.addExit(b);
+                b = new Exit("Vent Connection");
+                b.setTarget(roomJ);
+                b.setRequirement(ExitRequirement.ALWAYS_OPEN);
+                b.setDesc("The exit continues down the vents.");
+                b.setDirection(Direction.WEST);
+                roomL.addExit(b);
+
             }
             default -> {
                 rooms.add(new Room("Invalid map number!"));

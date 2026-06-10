@@ -14,18 +14,37 @@ Dev notes:
 5/31/2026: Finished basic development of 'Searchable' and 'Item' classes
 5/31/2026: Completed 'hide' and 'rest' functionality
 5/31/2026: Since I've worked so hard, and I'm on track, I'll take a break! See you again on 6/2~!
+
 6/4/2026: Couldn't bring myself to work on it until the 4th....
 6/4/2026: Added functionality for 'Vent' - should now work, if connected to a 'Vent Room'
 6/4/2026: Added 'Cabinet' class, extension of Searchable
 6/4/2026: Need to add 'TrashBin', 'Shelf', 'Table', and 'Container' Searchables before I create Map #1
 6/4/2026: Also need to add 'Documents', 'Keycard', and 'Tool' Items
+
 6/5/2026: Added Rooms A (Cell M4), B (Corridor M), and C (Utility Access) to Map #1 - excluding all the incomplete types
+
 6/6/2026: Did a run of Map #0 - took less than 8 minutes to do everything possible, but that's without error. Probably ~15, 20min for a newbie
 6/6/2026: Finished adding all Rooms for Map #1, excluding all the incomplete object types
+
 6/7/2026: Finished adding all objects, but functionality has yet to be determined
 6/7/2026: Need to check and see if all functions work - and maybe set up the actual 'take' function and inventory functionality
 6/7/2026: Doing the testing tomorrow - way too irate today
+
 6/8/2026: Before testing, need to add the extra terminal commands (search, read) and extra view (Documents View, though technically that can wait)
 6/8/2026: 'Search' and 'Read' should work, but still need to make and test 'Take'...
 6/8/2026: Tested almost all functions, but haven't tested the 'Document View' yet - will prbobably test it out tomorrow, after doing a run
 6/8/2026: Also need to add the Vent rooms for vent navigation
+
+6/9/2026: Back to work - now for the Document View test and Vent room additions
+6/9/2026: 'Document View' technically works, but need to add the actual contents...
+6/9/2026: Sleep function wasn't working - should be fixed now!
+6/9/2026: Okay, vent navigation should work now - think that's it!
+6/9/2026: Now to figure out how to complete the facility...
+6/9/2026: Well, before that, there's still the guard movement, if I add that, camera alert systems, other useTurn cases, and other things that I've forgotten now
+6/9/2026: Let's work on the alert system first, then...
+6/9/2026: Okay, switching to Swing elements, so far have done Terminal View, and Comms View is still in progress...
+6/9/2026: Done "Vitals" and "Comms", now "Document" is all that's left
+6/9/2026: Technically done all the views, but still need to add content for the Document objects
+6/9/2026: Also need to fix the Exits for the Atrium Vent - for some reason you can only head west instead of down!
+6/9/2026: Also fixed a type for the Bed action success
+6/9/2026: Probably other bugs that need to be caught - but that's for another time!z

@@ -11,13 +11,12 @@ public class Bed extends Interactable {
     }
 
     public String rest(Player p) {
-        //TODO: Build function
         if (!inUse) {
             this.inUse = true;
-            this.turnCount = this.turnCost;
+            this.turnCount = 0;
             p.setStatus(PlayerStatus.RESTING);
             p.bed = this;
-            return "ACTIOM SUCCESS | Cass is now sleeping";
+            return "ACTION SUCCESS | Cass is now sleeping";
         } else {
             return "ERROR | Cass is already sleeping";
         }

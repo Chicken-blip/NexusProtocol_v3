@@ -12,7 +12,7 @@ public class Keypad extends Interactable {
         this.isSolved = false;
         this.isTerminalInteractable = true;
         this.desc = "N/A";
-        this.state = "LOCKEd";
+        this.state = "LOCKED";
     }
 
 
