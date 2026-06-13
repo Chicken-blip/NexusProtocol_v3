@@ -56,3 +56,14 @@ Dev notes:
 6/10/2026: Also added the new lines for 'help' - at least, the ones that came to mind
 6/10/2026: Now to add the other doc contents...
 6/10/2026: All doc contents added! Think I can rebuild now!
+
+6/12/2026: Back to this project, but there's not a lot of time today
+6/12/2026: Planned out Map #2, and it'll involve a new object - Terminal (basically just computer temrinals tho)
+6/12/2026: Hacking an Terminal will result in a view for that specific device to open.
+6/12/2026: Have the class made, but there's literally nothing there yet. Of course, I'll have to build the rest of this facility (with 15+ rooms!) before I can really test it
+6/12/2026: Hopefully, by tomorrow, I come back with a plan for Terminals (what they are, what they provide, why they exist, etc.)
+6/12/2026: Okay, I have a plan - general Terminal class, multiple 'sub-classes', each with their own layout upon accessing them
+6/12/2026: I'll list out the terminal types in the Terminal class
+6/12/2026: Done planning - should be all for today. I'm mentally exhausted now from planning...
+
+6/13/2026: Data Terminal and Security Terminal mapped out in Netbeans - now to map out the other three
