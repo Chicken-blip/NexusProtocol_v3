@@ -67,3 +67,10 @@ Dev notes:
 6/12/2026: Done planning - should be all for today. I'm mentally exhausted now from planning...
 
 6/13/2026: Data Terminal and Security Terminal mapped out in Netbeans - now to map out the other three
+6/13/2026: All Terminals mapped out on Netbeans. Now I work in here
+6/13/2026: Either I start working on Map 2, or I make the Terminal class work.
+
+6/14/2026: All rooms for Map 2 have been created, though they are all empty and disconnected...
+6/14/2026: All objects and connections should be complete - but it definetly needs to be tested
+6/14/2026: Also need to add the terminal functionality, but that's for a later date
+6/14/2026: Probably won't test it out until next week - will probably work on Night Heist and Space Repair projects until then

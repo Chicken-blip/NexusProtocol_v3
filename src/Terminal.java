@@ -12,7 +12,9 @@ Control facility utilities and view full facility stats. Toggle power, water, an
  */
 
 public class Terminal extends Interactable {
-    public Terminal(String name, int id) {
+    int terminalType;
+    public Terminal(String name, int id, int type) {
         super(name, id);
+        this.terminalType = type;
     }
 }
