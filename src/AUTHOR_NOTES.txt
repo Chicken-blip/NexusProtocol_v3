@@ -74,3 +74,18 @@ Dev notes:
 6/14/2026: All objects and connections should be complete - but it definetly needs to be tested
 6/14/2026: Also need to add the terminal functionality, but that's for a later date
 6/14/2026: Probably won't test it out until next week - will probably work on Night Heist and Space Repair projects until then
+
+6/15/2026: Functionality-wise, the 2nd Map works well. However, there's still some things to test out and probably fix...
+6/15/2026: Also, new idea - machine guns! Armed in some rooms, paired with security cameras, and can injure Cass (or kill if already injured with 3+ injuries)
+6/15/2026: Might think of other security systems to add in...
+6/15/2026: That, and other missions types to have...just exploring can be boring easily...
+6/15/2026: Okay, potential security systems: Auto-Door (locks after # of turns after using), Key Lock (intuitive), Gas Trap (automatic spike stress on entry), Sound Emitter (increase stress + heart rate per turn), Smoke Dispenser (Cass can't do visible actions until they leave), and Stun Pulse (Cass can't act at all for ~3 turns)
+
+6/16/2026: Considering a SystemObject class for things like the generator or HVAC units.
+6/16/2026: No more considering/brainstorming - back to building!
+6/16/2026: Added guards for Map 2, now I add Tool functionality?
+6/16/2026: Tools can now be equipped and unequipped.
+6/16/2026: Figuring out how the uses will work, since cass-use already applies to interactables like beds and waterdispensers
+6/16/2026: New command, 'cass-interact', will only be applicable to SystemObjects, and can only work if the correct tool is equipped
+6/16/2026: Will add functionality for 'access' (Terminal interaction) and 'cass-interact' (SystemObject interaction) later
+6/16/2026: All Document contents for Map 2 added - all while feeling like throwing up...

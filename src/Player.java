@@ -12,6 +12,7 @@ public class Player {
     int exhaustedCnter;
     HidingSpot location = null;
     Bed bed = null;
+    Tool equipped = null;
 
     public Player() {
         status = PlayerStatus.PANICKING;
@@ -121,5 +122,19 @@ public class Player {
             }
         }
         return null;
+    }
+
+    public String equip(Item i) {
+        if (this.equipped == null) {
+            this.equipped = (Tool) i;
+            return "ACTION SUCCESS | " + i.name + " equipped";
+        } else {
+            return "ERROR | Cass already has " + this.equipped.name + " equipped";
+        }
+    }
+    public String unequip() {
+        Item i = this.equipped;
+        this.equipped = null;
+        return "ACTION SUCCESS | " + i.name + " unequipped and returned to inventory";
     }
 }

@@ -34,8 +34,8 @@ public class Game extends JFrame {
         this.IDs.add(0);
         this.turn = 0;
         this.maxTurns = maxTurns;
-        this.facility = new Facility(this, 1);
-        guardMvmtSystem(1);
+        this.facility = new Facility(this, 2);
+        guardMvmtSystem(2);
         this.player = new Player();
         gameRunning = false;
     }
@@ -570,6 +570,7 @@ public class Game extends JFrame {
                             code = cmd.substring(cmd.indexOf(" "), cmd.length()).strip();
                            term_println("> " + decode(code), txt);
                         }
+                        case "access" -> {}
                         case "open" -> {
                             id = cmd.substring(cmd.indexOf(" "));
                             try {
@@ -897,6 +898,56 @@ public class Game extends JFrame {
                             }
                             useTurn("DEFAULT", txt);
                         }
+                        case "cass-equip" -> {
+                            if (!player.currentRoom.canActInRoom(player)) {
+                                term_println("> " + player.currentRoom.actionFail(player), txt);
+                            } else if (player.isSleeping()) {
+                                term_println("> " + player.actFail(), txt);
+                            } else {
+                                //Stop hiding
+                                if (player.status == PlayerStatus.HIDING) {
+                                    player.setStatus(PlayerStatus.CALM);
+                                    player.setStatus();
+                                    player.location = null;
+                                    term_println("> NOTE: Cass is no longer hiding.", txt);
+                                }
+                                id = cmd.substring(cmd.indexOf(" "));
+                                try {
+                                    int id_num = Integer.parseInt(id.strip());
+                                    if (!IDs.contains(id_num) && player.getFromInv(id_num) == null) {
+                                        throw new ArithmeticException();
+                                    }
+                                    if (player.getFromInv(id_num) != null) {
+                                        Item i = player.getFromInv(id_num);
+                                        term_println("> " + player.equip(i), txt);
+                                    } else {
+                                        Interactable obj = find_object(id_num);
+                                        term_println("> NAME: " + obj.name, txt);
+                                        term_println("> STATE: " + obj.state, txt);
+                                        if (obj instanceof Keypad o) {
+                                            term_println("> ENCRYPTION: [" + encode(String.valueOf(o.correctCode)) + "]", txt);
+                                        }
+                                        if (obj instanceof EmergencyKit kit) {
+                                            term_println("> USES: " + kit.usesRemaining, txt);
+                                        }
+                                        if (obj instanceof WaterDispenser disp) {
+                                            term_println("> USES: " + disp.usesRemaining, txt);
+                                        }
+                                        if (obj instanceof Bed bed) {
+                                            term_println("> TURNS FOR USE: " + bed.turnCost, txt);
+                                        }
+                                        if (obj instanceof Window wnd) {
+                                            term_println("> VISIBILITY: " + wnd.visibility, txt);
+                                            term_println("> RISK: " + wnd.risk, txt);
+                                        }
+                                        term_println(">", txt);
+                                    }
+                                } catch (Exception ef) {
+                                    term_println("> INVALID OBJECT ID | You must put in a valid object ID", txt);
+                                }
+                            }
+                        }
+                        case "cass-interact" -> {}
                         default -> {
                             term_println("> INVALID COMMAND | Type in 'help' to view a list of commands.", txt);
                             useTurn("DEFAULT", txt);
@@ -916,6 +967,9 @@ public class Game extends JFrame {
                             }
                             term_println("> ", txt);
                             useTurn("DEFAULT", txt);
+                        }
+                        case "cass-unequip" -> {
+                            term_println("> " + player.unequip(), txt);
                         }
                         case "scan" -> {
                            term_println("> Room: " + player.currentRoom.name, txt);
@@ -942,7 +996,7 @@ public class Game extends JFrame {
                            useTurn("DEFAULT", txt);
                         }
                         case "look", "inspect", "enable", "unlock", "disable", "toggle", "bypass", "decrypt", "reset", "cass-use",
-                             "cass-hide", "cass-go", "cass-search", "cass-take", "cass-read" -> {
+                             "cass-hide", "cass-go", "cass-search", "cass-take", "cass-read", "cass-equip", "cass-interact" -> {
                            term_println("> INCORRECT COMMAND SYNTAX | This command requires at least 1 argument.", txt);
                             useTurn("DEFAULT", txt);
                         }
@@ -1159,22 +1213,54 @@ public class Game extends JFrame {
         switch (mapType) {
             case 0 -> {}
             case 1 -> {
-                Guard g = new Guard();
-                g.rm = facility.rooms.get(1);
-                g.pattern = new HashMap<>();
-                g.pattern.put(1, facility.rooms.get(1));
-                g.pattern.put(2, facility.rooms.get(1));
-                g.pattern.put(3, facility.rooms.get(1));
-                g.pattern.put(4, facility.rooms.get(5));
-                g.pattern.put(5, facility.rooms.get(5));
-                g.pattern.put(6, facility.rooms.get(7));
-                g.pattern.put(7, facility.rooms.get(7));
-                g.pattern.put(8, facility.rooms.get(7));
-                g.pattern.put(9, facility.rooms.get(7));
-                g.pattern.put(10, facility.rooms.get(7));
-                g.pattern.put(11, facility.rooms.get(5));
-                g.pattern.put(12, facility.rooms.get(5));
-                this.guards.add(g);
+                //One guard, goes through Corridor to Office
+                Guard g1 = new Guard();
+                g1.rm = facility.rooms.get(1);
+                g1.pattern = new HashMap<>();
+                g1.pattern.put(1, facility.rooms.get(1));
+                g1.pattern.put(2, facility.rooms.get(1));
+                g1.pattern.put(3, facility.rooms.get(1));
+                g1.pattern.put(4, facility.rooms.get(5));
+                g1.pattern.put(5, facility.rooms.get(5));
+                g1.pattern.put(6, facility.rooms.get(7));
+                g1.pattern.put(7, facility.rooms.get(7));
+                g1.pattern.put(8, facility.rooms.get(7));
+                g1.pattern.put(9, facility.rooms.get(7));
+                g1.pattern.put(10, facility.rooms.get(7));
+                g1.pattern.put(11, facility.rooms.get(5));
+                g1.pattern.put(12, facility.rooms.get(5));
+                this.guards.add(g1);
+            }
+            case 2 -> {
+                //Two guards - one going from checkpoint to corridor, one from generator to employee lounge,
+                Guard g2 = new Guard();
+                g2.rm = facility.rooms.get(4);
+                g2.pattern = new HashMap<>();
+                g2.pattern.put(1, facility.rooms.get(4));
+                g2.pattern.put(2, facility.rooms.get(4));
+                g2.pattern.put(3, facility.rooms.get(4));
+                g2.pattern.put(4, facility.rooms.get(4));
+                g2.pattern.put(5, facility.rooms.get(3));
+                g2.pattern.put(6, facility.rooms.get(3));
+                g2.pattern.put(7, facility.rooms.get(3));
+                g2.pattern.put(8, facility.rooms.get(3));
+                this.guards.add(g2);
+                Guard g3 = new Guard();
+                g3.rm = facility.rooms.get(12);
+                g3.pattern = new HashMap<>();
+                g3.pattern.put(1, facility.rooms.get(12));
+                g3.pattern.put(2, facility.rooms.get(12));
+                g3.pattern.put(3, facility.rooms.get(12));
+                g3.pattern.put(4, facility.rooms.get(13));
+                g3.pattern.put(5, facility.rooms.get(13));
+                g3.pattern.put(6, facility.rooms.get(5));
+                g3.pattern.put(7, facility.rooms.get(5));
+                g3.pattern.put(8, facility.rooms.get(6));
+                g3.pattern.put(9, facility.rooms.get(6));
+                g3.pattern.put(10, facility.rooms.get(5));
+                g3.pattern.put(11, facility.rooms.get(5));
+                g3.pattern.put(12, facility.rooms.get(13));
+                this.guards.add(g3);
             }
         }
     }
