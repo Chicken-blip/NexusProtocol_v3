@@ -117,7 +117,7 @@ public class Game extends JFrame {
         cards.add(vitalPanel, "Vitals View");
         cards.add(docPanel, "Document View");
 
-        this.add(cards, BorderLayout.CENTER);
+        //this.add(cards, BorderLayout.CENTER);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -764,7 +764,6 @@ public class Game extends JFrame {
                             useTurn("DEFAULT", txt);
                         }
                         case "cass-read" -> {
-                            //FIXME: In-progress - still needs to be tested
                             if (!player.currentRoom.canActInRoom(player)) {
                                 term_println("> " + player.currentRoom.actionFail(player), txt);
                             } else if (player.isSleeping()) {
@@ -803,7 +802,6 @@ public class Game extends JFrame {
                             useTurn("DEFAULT", txt);
                         }
                         case "cass-search" -> {
-                            //FIXME: In-progress - still needs to be tested
                             if (!player.currentRoom.canActInRoom(player)) {
                                 term_println("> " + player.currentRoom.actionFail(player), txt);
                             } else if (player.isSleeping()) {
@@ -844,7 +842,6 @@ public class Game extends JFrame {
                             useTurn("DEFAULT", txt);
                         }
                         case "cass-take" -> {
-                            //FIXME: In-progress - still needs to be tested
                             if (!player.currentRoom.canActInRoom(player)) {
                                 term_println("> " + player.currentRoom.actionFail(player), txt);
                             } else if (player.isSleeping()) {

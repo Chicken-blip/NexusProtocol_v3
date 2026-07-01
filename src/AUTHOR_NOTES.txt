@@ -89,3 +89,7 @@ Dev notes:
 6/16/2026: New command, 'cass-interact', will only be applicable to SystemObjects, and can only work if the correct tool is equipped
 6/16/2026: Will add functionality for 'access' (Terminal interaction) and 'cass-interact' (SystemObject interaction) later
 6/16/2026: All Document contents for Map 2 added - all while feeling like throwing up...
+
+6/17/2026: Now to work on.....?
+
+6/24/2026: Fixed the bed - now it'll still being in use...

@@ -62,6 +62,7 @@ public class Player {
             if (bed.turnCount > bed.turnCost) {
                 //Completed sleeping
                 this.bed.turnCount = 0;
+                this.bed.inUse = false;
                 this.bed = null;
             }
         }
